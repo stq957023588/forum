@@ -6,6 +6,8 @@ target/
 
 logs
 
+test
+
 .mvn
 
 ### STS ###
