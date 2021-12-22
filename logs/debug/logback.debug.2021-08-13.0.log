@@ -1,0 +1,7 @@
+2021-08-13 14:10:42 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-13 14:10:48 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-13 14:13:44 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-13 14:13:50 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-13 16:49:54 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-13 16:54:39 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-13 16:57:07 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE

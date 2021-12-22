@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.RoleAuthorityRelationMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.RoleAuthorityRelation">
+            <id property="id" column="ID" jdbcType="INTEGER"/>
+            <result property="roleId" column="ROLE_ID" jdbcType="INTEGER"/>
+            <result property="authorityId" column="AUTHORITY_ID" jdbcType="INTEGER"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,ROLE_ID,AUTHORITY_ID,
+        CREATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from role_authority_relation
+        where  ID = #{id,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from role_authority_relation
+        where  ID = #{id,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.RoleAuthorityRelation" useGeneratedKeys="true">
+        insert into role_authority_relation
+        ( ID,ROLE_ID,AUTHORITY_ID
+        ,CREATE_TIME)
+        values (#{id,jdbcType=INTEGER},#{roleId,jdbcType=INTEGER},#{authorityId,jdbcType=INTEGER}
+        ,#{createTime,jdbcType=TIMESTAMP}))
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.RoleAuthorityRelation" useGeneratedKeys="true">
+        insert into role_authority_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="roleId != null">roleId,</if>
+                <if test="authorityId != null">authorityId,</if>
+                <if test="createTime != null">createTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">ID = #{id,jdbcType=INTEGER},</if>
+                <if test="roleId != null">ROLE_ID = #{roleId,jdbcType=INTEGER},</if>
+                <if test="authorityId != null">AUTHORITY_ID = #{authorityId,jdbcType=INTEGER},</if>
+                <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.RoleAuthorityRelation">
+        update role_authority_relation
+        <set>
+                <if test="roleId != null">
+                    ROLE_ID = #{roleId,jdbcType=INTEGER},
+                </if>
+                <if test="authorityId != null">
+                    AUTHORITY_ID = #{authorityId,jdbcType=INTEGER},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   ID = #{id,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.RoleAuthorityRelation">
+        update role_authority_relation
+        set 
+            ROLE_ID =  #{roleId,jdbcType=INTEGER},
+            AUTHORITY_ID =  #{authorityId,jdbcType=INTEGER},
+            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP}
+        where   ID = #{id,jdbcType=INTEGER} 
+    </update>
+</mapper>

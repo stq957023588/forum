@@ -1,0 +1,18 @@
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  datasource:
+    username: root
+    password: HX.123456
+    url: jdbc:mysql://192.168.108.219:3306/mycat
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    solr:
+      host: http://127.0.0.1:8983/solr/first_core
+    mongodb:
+      uri: mongodb://localhost:27017/fool
+server:
+  port: 5555
+swagger:
+  enable: true

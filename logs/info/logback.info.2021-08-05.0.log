@@ -1,0 +1,66 @@
+2021-08-05 14:07:41 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 21264 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:07:42 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:09:27 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 6828 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:09:27 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:10:20 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 21180 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:10:20 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:10:29 [Main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 9.644 seconds (JVM running for 11.101)
+2021-08-05 14:11:40 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 20968 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:11:40 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:11:45 [Main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 5.801 seconds (JVM running for 7.358)
+2021-08-05 14:14:48 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 20968 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:14:48 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:14:50 [Main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 1.955 seconds (JVM running for 192.153)
+2021-08-05 14:17:17 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 11148 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:17:17 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:17:22 [Main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 5.278 seconds (JVM running for 6.291)
+2021-08-05 14:17:34 [ec-2] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message:asdasd from 11111
+2021-08-05 14:33:27 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 11148 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:33:27 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:33:29 [Main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 2.735 seconds (JVM running for 973.452)
+2021-08-05 14:34:17 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 16016 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:34:17 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:34:21 [Main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 5.193 seconds (JVM running for 6.275)
+2021-08-05 14:35:02 [ec-2] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message:{"to":"123","content":"asdadsd"} from 11111
+2021-08-05 14:35:46 [Main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 4420 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:35:46 [Main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:35:51 [Main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 5.293 seconds (JVM running for 6.516)
+2021-08-05 14:36:20 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 19608 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:36:20 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:36:25 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 5.597 seconds (JVM running for 6.89)
+2021-08-05 14:36:47 [ec-2] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message:{"to":"123","content":"asdad"} from 11111
+2021-08-05 14:38:30 [ec-4] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message: from 11111
+2021-08-05 14:38:41 [ec-6] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message:{"to":"123","content":"asdad"} from 11111
+2021-08-05 14:41:14 [ec-8] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message:{"to":"22222","content":"asdad"} from 11111
+2021-08-05 14:49:34 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 20292 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 14:49:34 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 14:49:38 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 4.925 seconds (JVM running for 6.025)
+2021-08-05 14:59:33 [ec-3] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message:{"to":"22222","content":"asdqw"} from 11111
+2021-08-05 15:00:02 [ec-5] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message: from 11111
+2021-08-05 15:00:09 [ec-7] INFO  c.f.d.w.PrivateChatWebSocket             : Accept message:{"to":"22222","content":"asdqw"} from 11111
+2021-08-05 15:19:31 [main] INFO  c.fool.demo.DemoApplicationTests         : Starting DemoApplicationTests on MININT-IE2UUMN with PID 3792 (started by 80010379 in E:\workspace\demo)
+2021-08-05 15:19:31 [main] INFO  c.fool.demo.DemoApplicationTests         : The following profiles are active: fool
+2021-08-05 15:19:35 [main] INFO  c.f.demo.service.FoolServiceTest         : Starting FoolServiceTest on MININT-IE2UUMN with PID 3792 (started by 80010379 in E:\workspace\demo)
+2021-08-05 15:19:35 [main] INFO  c.f.demo.service.FoolServiceTest         : The following profiles are active: fool
+2021-08-05 15:22:15 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 19092 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 15:22:15 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 15:22:21 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 6.91 seconds (JVM running for 8.186)
+2021-08-05 15:31:46 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 21672 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 15:31:46 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 15:31:50 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 5.282 seconds (JVM running for 7.573)
+2021-08-05 15:34:53 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 4284 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 15:34:53 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 15:35:16 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 24.41 seconds (JVM running for 25.663)
+2021-08-05 15:35:29 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 20692 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 15:35:29 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 15:35:38 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 9.649 seconds (JVM running for 10.371)
+2021-08-05 15:37:43 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 22156 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 15:37:43 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 15:37:47 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 5.384 seconds (JVM running for 6.695)
+2021-08-05 15:44:50 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 21936 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 15:44:50 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 15:44:54 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 5.879 seconds (JVM running for 7.113)
+2021-08-05 15:50:32 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 18656 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-05 15:50:32 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-05 15:50:36 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 4.837 seconds (JVM running for 5.801)
+2021-08-05 15:52:30 [ec-3] INFO  c.f.d.controller.FoolController          : Student:Student(id=null, name=asfas , age=null, classNo=null)

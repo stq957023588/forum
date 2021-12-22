@@ -1,0 +1,21 @@
+2021-08-05 14:07:42 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:09:27 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:10:20 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:11:40 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:14:48 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:17:17 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:33:27 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:34:17 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:35:46 [Main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:36:20 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 14:49:34 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:19:31 [main] DEBUG c.fool.demo.DemoApplicationTests         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:19:35 [main] DEBUG c.f.demo.service.FoolServiceTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:22:15 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:31:46 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:34:53 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:35:29 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:37:43 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:44:50 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-05 15:47:08 [er-2] DEBUG c.f.d.l.RedisExpireMessageListener       : Expire key:student::vue
+2021-08-05 15:50:32 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE

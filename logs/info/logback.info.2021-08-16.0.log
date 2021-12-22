@@ -1,0 +1,8 @@
+2021-08-16 09:23:26 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 25768 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-16 09:23:26 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-16 09:23:32 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 6.455 seconds (JVM running for 8.054)
+2021-08-16 09:23:32 [main] INFO  c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-16 10:14:57 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 1236 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-16 10:14:57 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-16 10:22:00 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 19620 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-16 10:22:00 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool

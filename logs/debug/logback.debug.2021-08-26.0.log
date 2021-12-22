@@ -1,0 +1,14 @@
+2021-08-26 10:37:59 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-26 10:38:10 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-26 10:39:02 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-26 10:39:37 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-26 10:42:54 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-26 10:43:04 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-26 11:26:53 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-26 11:26:59 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-26 11:27:43 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-26 11:27:50 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-26 11:28:16 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-26 11:28:22 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-26 11:28:40 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-26 11:28:54 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test

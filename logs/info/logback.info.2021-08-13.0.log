@@ -1,0 +1,14 @@
+2021-08-13 14:10:42 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 31852 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-13 14:10:42 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-13 14:10:48 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 7.721 seconds (JVM running for 9.852)
+2021-08-13 14:10:48 [main] INFO  c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-13 14:13:44 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 6492 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-13 14:13:44 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-13 14:13:50 [main] INFO  com.fool.demo.DemoApplication            : Started DemoApplication in 6.456 seconds (JVM running for 7.932)
+2021-08-13 14:13:50 [main] INFO  c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-13 16:49:54 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 12448 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-13 16:49:54 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-13 16:54:39 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 16828 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-13 16:54:39 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool
+2021-08-13 16:57:07 [main] INFO  com.fool.demo.DemoApplication            : Starting DemoApplication on MININT-IE2UUMN with PID 25888 (E:\workspace\demo\target\classes started by 80010379 in E:\workspace\demo)
+2021-08-13 16:57:07 [main] INFO  com.fool.demo.DemoApplication            : The following profiles are active: fool

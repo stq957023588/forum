@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.AuthorityMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.Authority">
+        <id property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="url" column="URL" jdbcType="VARCHAR"/>
+        <result property="method" column="METHOD" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,NAME,URL,
+        METHOD,CREATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from authority
+        where ID = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectRolesByUrl" resultType="com.fool.demo.domain.Role">
+        select r.*
+        from role_authority_relation rar
+                 join authority a on a.id = rar.AUTHORITY_ID
+                 join role r on r.id = rar.ROLE_ID
+        where a.URL = #{url,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from authority
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Authority"
+            useGeneratedKeys="true">
+        insert into authority
+        ( ID, NAME, URL
+        , METHOD, CREATE_TIME)
+        values ( #{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}
+               , #{method,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}) )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Authority"
+            useGeneratedKeys="true">
+        insert into authority
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="url != null">url,</if>
+            <if test="method != null">method,</if>
+            <if test="createTime != null">createTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID = #{id,jdbcType=INTEGER},</if>
+            <if test="name != null">NAME = #{name,jdbcType=VARCHAR},</if>
+            <if test="url != null">URL = #{url,jdbcType=VARCHAR},</if>
+            <if test="method != null">METHOD = #{method,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.Authority">
+        update authority
+        <set>
+            <if test="name != null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                URL = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                METHOD = #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.Authority">
+        update authority
+        set NAME        = #{name,jdbcType=VARCHAR},
+            URL         = #{url,jdbcType=VARCHAR},
+            METHOD      = #{method,jdbcType=VARCHAR},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

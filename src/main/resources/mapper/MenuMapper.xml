@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.Menu">
+        <id property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
+        <result property="url" column="URL" jdbcType="VARCHAR"/>
+        <result property="component" column="COMPONENT" jdbcType="VARCHAR"/>
+        <result property="icon" column="ICON" jdbcType="VARCHAR"/>
+        <result property="parentMenuId" column="PARENT_MENU_ID" jdbcType="INTEGER"/>
+        <result property="enable" column="ENABLE" jdbcType="INTEGER"/>
+        <result property="creator" column="CREATOR" jdbcType="INTEGER"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="DELETED" jdbcType="INTEGER"/>
+        <result property="deleter" column="DELETER" jdbcType="INTEGER"/>
+        <result property="deleteTime" column="DELETE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,NAME,DESCRIPTION,
+        URL,COMPONENT,ICON,
+        PARENT_MENU_ID,ENABLE,CREATOR,
+        CREATE_TIME,DELETED,DELETER,
+        DELETE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from menu
+        where ID = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAllWithRole" resultType="com.fool.demo.domain.MenuExtra">
+        select m.*, r.name role
+        from menu m
+                 left join menu_role_relation mrr on m.id = mrr.MENU_ID
+                 left join role r on r.id = mrr.ROLE_ID
+        order by mrr.MENU_ID, mrr.ROLE_ID
+    </select>
+    <select id="selectAll" resultType="com.fool.demo.domain.Menu">
+        select * from menu
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from menu
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Menu"
+            useGeneratedKeys="true">
+        insert into menu
+        ( ID, NAME, DESCRIPTION
+        , URL, COMPONENT, ICON
+        , PARENT_MENU_ID, ENABLE, CREATOR
+        , CREATE_TIME, DELETED, DELETER
+        , DELETE_TIME)
+        values ( #{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}
+               , #{url,jdbcType=VARCHAR}, #{component,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}
+               , #{parentMenuId,jdbcType=INTEGER}, #{enable,jdbcType=INTEGER}, #{creator,jdbcType=INTEGER}
+               , #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=INTEGER}, #{deleter,jdbcType=INTEGER}
+               , #{deleteTime,jdbcType=TIMESTAMP}) )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Menu"
+            useGeneratedKeys="true">
+        insert into menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="url != null">url,</if>
+            <if test="component != null">component,</if>
+            <if test="icon != null">icon,</if>
+            <if test="parentMenuId != null">parent_menu_id,</if>
+            <if test="enable != null">enable,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="deleter != null">deleter,</if>
+            <if test="deleteTime != null">delete_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id,jdbcType=INTEGER},</if>
+            <if test="name != null"> #{name,jdbcType=VARCHAR},</if>
+            <if test="description != null"> #{description,jdbcType=VARCHAR},</if>
+            <if test="url != null"> #{url,jdbcType=VARCHAR},</if>
+            <if test="component != null"> #{component,jdbcType=VARCHAR},</if>
+            <if test="icon != null"> #{icon,jdbcType=VARCHAR},</if>
+            <if test="parentMenuId != null"> #{parentMenuId,jdbcType=INTEGER},</if>
+            <if test="enable != null"> #{enable,jdbcType=INTEGER},</if>
+            <if test="creator != null"> #{creator,jdbcType=INTEGER},</if>
+            <if test="createTime != null"> #{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="deleted != null"> #{deleted,jdbcType=INTEGER},</if>
+            <if test="deleter != null"> #{deleter,jdbcType=INTEGER},</if>
+            <if test="deleteTime != null"> #{deleteTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.Menu">
+        update menu
+        <set>
+            <if test="name != null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                URL = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="component != null">
+                COMPONENT = #{component,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                ICON = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="parentMenuId != null">
+                PARENT_MENU_ID = #{parentMenuId,jdbcType=INTEGER},
+            </if>
+            <if test="enable != null">
+                ENABLE = #{enable,jdbcType=INTEGER},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null">
+                DELETED = #{deleted,jdbcType=INTEGER},
+            </if>
+            <if test="deleter != null">
+                DELETER = #{deleter,jdbcType=INTEGER},
+            </if>
+            <if test="deleteTime != null">
+                DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.Menu">
+        update menu
+        set NAME           = #{name,jdbcType=VARCHAR},
+            DESCRIPTION    = #{description,jdbcType=VARCHAR},
+            URL            = #{url,jdbcType=VARCHAR},
+            COMPONENT      = #{component,jdbcType=VARCHAR},
+            ICON           = #{icon,jdbcType=VARCHAR},
+            PARENT_MENU_ID = #{parentMenuId,jdbcType=INTEGER},
+            ENABLE         = #{enable,jdbcType=INTEGER},
+            CREATOR        = #{creator,jdbcType=INTEGER},
+            CREATE_TIME    = #{createTime,jdbcType=TIMESTAMP},
+            DELETED        = #{deleted,jdbcType=INTEGER},
+            DELETER        = #{deleter,jdbcType=INTEGER},
+            DELETE_TIME    = #{deleteTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

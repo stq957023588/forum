@@ -1,0 +1,24 @@
+2021-08-11 10:58:10 [main] DEBUG com.fool.demo.dao.PersonDaoTest          : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 10:59:54 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 11:04:42 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 11:07:45 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 11:11:37 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 11:11:51 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 11:12:01 [main] DEBUG com.fool.demo.DemoApplication            : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 11:12:06 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 11:13:27 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 11:13:38 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 11:14:33 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 11:14:45 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 13:18:20 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 13:18:31 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 13:19:22 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 13:19:33 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 13:20:32 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 13:20:45 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 13:21:46 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 13:22:00 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 13:25:17 [main] DEBUG c.fool.demo.utils.RedisUtilsTest         : Running with Spring Boot v2.3.4.RELEASE, Spring v5.2.9.RELEASE
+2021-08-11 13:25:30 [main] DEBUG c.f.d.r.ApplicationRunnerImpl            : Info Test
+2021-08-11 15:08:59 [er-2] DEBUG c.f.d.l.RedisExpireMessageListener       : Expire key:student::qwd
+2021-08-11 15:11:32 [er-3] DEBUG c.f.d.l.RedisExpireMessageListener       : Expire key:student::key

@@ -1,0 +1,67 @@
+server:
+  port: 6666
+swagger:
+  enable: true
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  # ShardingSphere 配置项
+  shardingsphere:
+    datasource:
+      # 所有数据源的名字
+      names: ds-orders-0, ds-orders-1, forum
+      forum:
+        type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/forum
+        username: root
+        password: 123456
+      # 订单 orders 数据源配置 00
+      ds-orders-0:
+        type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/sharding_00
+        username: root
+        password: 123456
+      # 订单 orders 数据源配置 01
+      ds-orders-1:
+        type: com.zaxxer.hikari.HikariDataSource # 使用 Hikari 数据库连接池
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/sharding_01
+        username: root
+        password: 123456
+    # 分片规则
+    sharding:
+      tables:
+        # orders 表配置
+        orders:
+          actual-data-nodes: ds-orders-0.orders_$->{[0,2]}, ds-orders-1.orders_$->{[1,3]} # 映射到 ds-orders-0 和 ds-orders-1 数据源的 orders 表们
+          key-generator: # 主键生成策略
+            column: id
+            type: SNOWFLAKE
+          database-strategy:
+            standard:
+              precise-algorithm-class-name: com.fool.demo.sharding.AvgDatabasePreciseShardingAlgorithm
+              range-algorithm-class-name: com.fool.demo.sharding.AvgDatabaseRangeShardingAlgorithm
+              sharding-column: value
+          table-strategy:
+            standard:
+              precise-algorithm-class-name: com.fool.demo.sharding.AvgDatabasePreciseShardingAlgorithm
+              range-algorithm-class-name: com.fool.demo.sharding.AvgDatabaseRangeShardingAlgorithm
+              sharding-column: value
+      default-data-source-name: forum
+    props:
+      sql:
+        show: true # 打印 SQL
+jwt:
+  tokenHeader: Authorization
+  secret: my-springsecurity-plus
+  expiration: 604800
+  token-prefix: 'Bearer '

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.User">
+            <id property="id" column="ID" jdbcType="INTEGER"/>
+            <result property="name" column="NAME" jdbcType="VARCHAR"/>
+            <result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+            <result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
+            <result property="headPic" column="HEAD_PIC" jdbcType="VARCHAR"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="INTEGER"/>
+            <result property="deleteTime" column="DELETE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,NAME,EMAIL,
+        PASSWORD,HEAD_PIC,CREATE_TIME,
+        DELETED,DELETE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where  ID = #{id,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from user
+        where  ID = #{id,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.User" useGeneratedKeys="true">
+        insert into user
+        ( ID,NAME,EMAIL
+        ,PASSWORD,HEAD_PIC,CREATE_TIME
+        ,DELETED,DELETE_TIME)
+        values (#{id,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR}
+        ,#{password,jdbcType=VARCHAR},#{headPic,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        ,#{deleted,jdbcType=INTEGER},#{deleteTime,jdbcType=TIMESTAMP}))
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.User" useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="name != null">name,</if>
+                <if test="email != null">email,</if>
+                <if test="password != null">password,</if>
+                <if test="headPic != null">headPic,</if>
+                <if test="createTime != null">createTime,</if>
+                <if test="deleted != null">deleted,</if>
+                <if test="deleteTime != null">deleteTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">ID = #{id,jdbcType=INTEGER},</if>
+                <if test="name != null">NAME = #{name,jdbcType=VARCHAR},</if>
+                <if test="email != null">EMAIL = #{email,jdbcType=VARCHAR},</if>
+                <if test="password != null">PASSWORD = #{password,jdbcType=VARCHAR},</if>
+                <if test="headPic != null">HEAD_PIC = #{headPic,jdbcType=VARCHAR},</if>
+                <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="deleted != null">DELETED = #{deleted,jdbcType=INTEGER},</if>
+                <if test="deleteTime != null">DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.User">
+        update user
+        <set>
+                <if test="name != null">
+                    NAME = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="email != null">
+                    EMAIL = #{email,jdbcType=VARCHAR},
+                </if>
+                <if test="password != null">
+                    PASSWORD = #{password,jdbcType=VARCHAR},
+                </if>
+                <if test="headPic != null">
+                    HEAD_PIC = #{headPic,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="deleted != null">
+                    DELETED = #{deleted,jdbcType=INTEGER},
+                </if>
+                <if test="deleteTime != null">
+                    DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   ID = #{id,jdbcType=INTEGER} 
+    </update>
+    <select id="selectByEmail" resultType="com.fool.demo.domain.User">
+        select * from user where email = #{email,jdbcType=VARCHAR}
+    </select>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.User">
+        update user
+        set 
+            NAME =  #{name,jdbcType=VARCHAR},
+            EMAIL =  #{email,jdbcType=VARCHAR},
+            PASSWORD =  #{password,jdbcType=VARCHAR},
+            HEAD_PIC =  #{headPic,jdbcType=VARCHAR},
+            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP},
+            DELETED =  #{deleted,jdbcType=INTEGER},
+            DELETE_TIME =  #{deleteTime,jdbcType=TIMESTAMP}
+        where   ID = #{id,jdbcType=INTEGER} 
+    </update>
+</mapper>
