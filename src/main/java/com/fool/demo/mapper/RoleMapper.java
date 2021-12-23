@@ -32,7 +32,6 @@ public interface RoleMapper {
 
     int updateEnableById(@Param("enable")Integer enable,@Param("id")Integer id);
 
-
     List<Role> selectAll();
 }
 

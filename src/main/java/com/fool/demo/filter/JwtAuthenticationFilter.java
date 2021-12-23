@@ -58,13 +58,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             DecodedJWT verify = verifier.verify(token);
 
+            int id = verify.getClaim("id").asInt();
             String name = verify.getClaim("name").asString();
             String email = verify.getClaim("email").asString();
             String[] roles = verify.getClaim("roles").asArray(String.class);
 
             List<GrantedAuthority> permissions = Stream.of(roles).map(e -> (GrantedAuthority) () -> e).collect(Collectors.toList());
 
-            CustomizeUser user = new CustomizeUser(name, email, "PROTECTED", permissions);
+            CustomizeUser user = new CustomizeUser(id,name, email, "PROTECTED", permissions);
 
             authentication = new UsernamePasswordAuthenticationToken(user, null, permissions);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -2,15 +2,17 @@ package com.fool.demo.service;
 
 import com.fool.demo.domain.Menu;
 import com.fool.demo.domain.MenuExtra;
-import com.fool.demo.entity.MenuDTO;
-import com.fool.demo.entity.MenuRoleDTO;
-import com.fool.demo.entity.MenuMeta;
+import com.fool.demo.entity.*;
 import com.fool.demo.mapper.MenuMapper;
 import com.fool.demo.mapstruct.MenuConvertor;
+import com.fool.demo.utils.PageUtils;
+import com.fool.demo.utils.TreeUtils;
+import com.fool.demo.utils.UserUtils;
+import com.github.pagehelper.ISelect;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,13 +33,35 @@ public class MenuService {
 
     public void add(MenuDTO menu) {
         Menu m = MenuConvertor.INSTANCE.toDomain(menu);
+
+        CustomizeUser currentUser = UserUtils.getCurrentUserDetails();
+        m.setCreator(currentUser.getId());
         menuMapper.insertSelective(m);
     }
 
-    public List<MenuDTO> getMenus() {
-        List<Menu> menus = menuMapper.selectAll();
-        return menus.stream().map(MenuConvertor.INSTANCE::toDataTransferObject).collect(Collectors.toList());
+    public void update(MenuDTO menu) {
+        Menu exist = menuMapper.selectByUrlAndNotEqualsId(menu.getUrl(), menu.getId());
+        if (exist != null){
+            throw new RuntimeException("已存在相同路径");
+        }
+        Menu origin = menuMapper.selectByPrimaryKey(menu.getId().longValue());
+
+        Menu m = MenuConvertor.INSTANCE.toDomain(menu, origin);
+        menuMapper.updateByPrimaryKey(m);
     }
+
+    public PageInfo<MenuDTO> getMenus(MenuQUERY query) {
+        ISelect select = menuMapper::selectWithParentMenuName;
+        return PageUtils.doSelect(select, query);
+    }
+
+    public List<MenuTreeNode> getMenuTree() {
+        List<Menu> menus = menuMapper.selectAll();
+        List<MenuTreeNode> treeNodeList = menus.stream().map(MenuConvertor.INSTANCE::toTreeNode).collect(Collectors.toList());
+
+        return TreeUtils.listToTree(treeNodeList);
+    }
+
 
     public List<MenuRoleDTO> getRoleMenus() {
         List<MenuExtra> menuExtras = menuMapper.selectAllWithRole();
@@ -57,6 +81,7 @@ public class MenuService {
                     menuMeta.setRoles(roles);
                 });
                 menuMeta.setTitle(menuExtra.getName());
+                menuMeta.setIcon(menuExtra.getIcon());
 
                 currentMenu = MenuConvertor.INSTANCE.toMenuRole(menuExtra);
                 currentMenu.setMeta(menuMeta);
@@ -69,42 +94,7 @@ public class MenuService {
             currentMenu.getMeta().getRoles().add(menuExtra.getRole());
         }
 
-
-        List<MenuRoleDTO> roots = menus.stream().filter(e -> e.getParentMenuId() == null).collect(Collectors.toList());
-
-        List<MenuRoleDTO> children = menus.stream()
-                .filter(e -> e.getParentMenuId() != null)
-                .collect(Collectors.toList());
-
-        List<MenuRoleDTO> currentFloor = roots;
-        List<MenuRoleDTO> nextFloor = new ArrayList<>();
-
-        while (!children.isEmpty()) {
-            Iterator<MenuRoleDTO> iterator = children.iterator();
-            while (iterator.hasNext()) {
-                MenuRoleDTO next = iterator.next();
-                if (mountIfContainsParent(currentFloor, next)) {
-                    nextFloor.add(next);
-                    iterator.remove();
-                }
-            }
-            currentFloor = nextFloor;
-            nextFloor = new ArrayList<>();
-        }
-
-        return roots;
-    }
-
-    private boolean mountIfContainsParent(List<MenuRoleDTO> list, MenuRoleDTO menu) {
-        for (MenuRoleDTO parent : list) {
-            if (parent.getId().equals(menu.getParentMenuId())) {
-                List<MenuRoleDTO> children = Optional.of(parent).map(MenuRoleDTO::getChildren).orElse(new ArrayList<>());
-                children.add(menu);
-                parent.setChildren(children);
-                return true;
-            }
-        }
-        return false;
+        return TreeUtils.listToTree(menus);
     }
 
 }

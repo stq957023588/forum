@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
         List<Role> roles = roleMapper.selectByUserId(user.getId());
         List<GrantedAuthority> auth = roles.stream().map(Role::getName).map(e -> (GrantedAuthority) () -> e).collect(Collectors.toList());
 
-        return new CustomizeUser(user.getName(), username, user.getPassword(), auth);
+        return new CustomizeUser(user.getId(),user.getName(), username, user.getPassword(), auth);
     }
 
 

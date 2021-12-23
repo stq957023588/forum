@@ -7,22 +7,21 @@ import java.util.List;
 
 /**
  * @author fool
- * @date 2021/12/20 15:41
+ * @date 2021/12/22 14:21
  */
 @Data
-public class MenuRoleDTO implements TreeNode<MenuRoleDTO,Integer> {
+public class MenuTreeNode implements TreeNode<MenuTreeNode,Integer> {
 
     private Integer id;
 
-    private String path;
+    private String name;
 
-    private String component;
+    private String url;
 
     private Integer parentMenuId;
 
-    private MenuMeta meta;
+    private List<MenuTreeNode> children;
 
-    private List<MenuRoleDTO> children;
 
     @Override
     public Integer getParentId() {

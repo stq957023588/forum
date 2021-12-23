@@ -6,8 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fool.demo.customize.CustomizeAccessDecisionManager;
 import com.fool.demo.customize.CustomizeFilterInvocationSecurityMetadataSource;
 import com.fool.demo.customize.CustomizeUsernamePasswordAuthenticationFilter;
+import com.fool.demo.entity.CustomizeUser;
 import com.fool.demo.entity.DefaultResult;
-import com.fool.demo.entity.Nameable;
 import com.fool.demo.filter.JwtAuthenticationFilter;
 import com.fool.demo.property.JwtProperty;
 import com.fool.demo.service.UserService;
@@ -20,7 +20,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -202,15 +201,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (httpServletRequest, httpServletResponse, authentication) -> {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            Nameable nameable = (Nameable) userDetails;
+            CustomizeUser userDetails = (CustomizeUser) authentication.getPrincipal();
 
             long current = System.currentTimeMillis();
 
             String token = JWT.create().withIssuer(jwtProperty.getIssuer())
                     .withIssuedAt(new Date(current))
                     .withExpiresAt(new Date(current + jwtProperty.getExpiration()))
-                    .withClaim("name", nameable.getName())
+                    .withClaim("id", userDetails.getId())
+                    .withClaim("name", userDetails.getName())
                     .withClaim("email", userDetails.getUsername())
                     .withArrayClaim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).toArray(new String[]{}))
                     .sign(Algorithm.HMAC256(jwtProperty.getSecret()));

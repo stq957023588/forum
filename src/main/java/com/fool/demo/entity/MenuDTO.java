@@ -11,6 +11,8 @@ import java.util.Date;
 @Data
 public class MenuDTO {
 
+    private Integer id;
+
     /**
      * 菜单名
      */
@@ -41,6 +43,7 @@ public class MenuDTO {
      */
     private Integer parentMenuId;
 
+    private String parentMenuName;
     /**
      * 是否启用
      */
