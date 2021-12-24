@@ -5,13 +5,13 @@
 <mapper namespace="com.fool.demo.mapper.RoleMapper">
 
     <resultMap id="BaseResultMap" type="com.fool.demo.domain.Role">
-            <id property="id" column="ID" jdbcType="INTEGER"/>
-            <result property="name" column="NAME" jdbcType="VARCHAR"/>
-            <result property="enable" column="ENABLE" jdbcType="INTEGER"/>
-            <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
-            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
-            <result property="deleted" column="DELETED" jdbcType="INTEGER"/>
-            <result property="deleteTime" column="DELETE_TIME" jdbcType="TIMESTAMP"/>
+        <id property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="enable" column="ENABLE" jdbcType="INTEGER"/>
+        <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="DELETED" jdbcType="INTEGER"/>
+        <result property="deleteTime" column="DELETE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -22,96 +22,126 @@
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from role
-        where  ID = #{id,jdbcType=INTEGER} 
+        where ID = #{id,jdbcType=INTEGER}
     </select>
     <select id="selectByUserId" resultType="com.fool.demo.domain.Role">
         select r.*
         from User_Role_Relation urr
-        join Role r on r.id = urr.ROLE_ID
+                 join Role r on r.id = urr.ROLE_ID
         where urr.USER_ID = #{userId,jdbcType=BIGINT}
     </select>
+    <select id="selectRolesByUrl" resultType="com.fool.demo.domain.Role">
+        select r.*
+        from role_authority_relation rar
+                 join authority a on a.id = rar.AUTHORITY_ID
+                 join role r on r.id = rar.ROLE_ID
+        where a.URL = #{url,jdbcType=VARCHAR}
+    </select>
     <select id="selectByName" resultType="com.fool.demo.domain.Role">
-        select * from role where NAME = #{name,jdbcType=VARCHAR}
+        select *
+        from role
+        where NAME = #{name,jdbcType=VARCHAR}
     </select>
     <select id="selectAll" resultType="com.fool.demo.domain.Role">
-        select * from role
+        select *
+        from role
+    </select>
+    <select id="selectByNameAndNotEqualsId" resultType="com.fool.demo.domain.Role">
+        select *
+        from role
+        where NAME = #{name,jdbcType=VARCHAR}
+          and id != #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectRolesByUrlAndMethod" resultType="com.fool.demo.domain.Role">
+        select r.*
+        from role_authority_relation rar
+                 join authority a on a.id = rar.AUTHORITY_ID
+                 join role r on r.id = rar.ROLE_ID
+        where a.URL = #{url,jdbcType=VARCHAR}
+          and a.method = #{method,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from role
-        where  ID = #{id,jdbcType=INTEGER} 
+        delete
+        from role
+        where ID = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Role" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Role"
+            useGeneratedKeys="true">
         insert into role
-        ( ID,NAME,ENABLE
-        ,DESCRIPTION,CREATE_TIME,DELETED
-        ,DELETE_TIME)
-        values (#{id,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{enable,jdbcType=INTEGER}
-        ,#{description,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{deleted,jdbcType=INTEGER}
-        ,#{deleteTime,jdbcType=TIMESTAMP}))
+        ( ID, NAME, ENABLE
+        , DESCRIPTION, CREATE_TIME, DELETED
+        , DELETE_TIME)
+        values ( #{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{enable,jdbcType=INTEGER}
+               , #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=INTEGER}
+               , #{deleteTime,jdbcType=TIMESTAMP}) )
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Role" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Role"
+            useGeneratedKeys="true">
         insert into role
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="id != null">id,</if>
-                <if test="name != null">name,</if>
-                <if test="enable != null">enable,</if>
-                <if test="description != null">description,</if>
-                <if test="createTime != null">createTime,</if>
-                <if test="deleted != null">deleted,</if>
-                <if test="deleteTime != null">deleteTime,</if>
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="enable != null">enable,</if>
+            <if test="description != null">description,</if>
+            <if test="createTime != null">createTime,</if>
+            <if test="deleted != null">deleted,</if>
+            <if test="deleteTime != null">deleteTime,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null"> #{id,jdbcType=INTEGER},</if>
-                <if test="name != null"> #{name,jdbcType=VARCHAR},</if>
-                <if test="enable != null"> #{enable,jdbcType=INTEGER},</if>
-                <if test="description != null">#{description,jdbcType=VARCHAR},</if>
-                <if test="createTime != null"> #{createTime,jdbcType=TIMESTAMP},</if>
-                <if test="deleted != null"> #{deleted,jdbcType=INTEGER},</if>
-                <if test="deleteTime != null"> #{deleteTime,jdbcType=TIMESTAMP},</if>
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+            <if test="enable != null">#{enable,jdbcType=INTEGER},</if>
+            <if test="description != null">#{description,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="deleted != null">#{deleted,jdbcType=INTEGER},</if>
+            <if test="deleteTime != null">#{deleteTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.Role">
         update role
         <set>
-                <if test="name != null">
-                    NAME = #{name,jdbcType=VARCHAR},
-                </if>
-                <if test="enable != null">
-                    ENABLE = #{enable,jdbcType=INTEGER},
-                </if>
-                <if test="description != null">
-                    DESCRIPTION = #{description,jdbcType=VARCHAR},
-                </if>
-                <if test="createTime != null">
-                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-                </if>
-                <if test="deleted != null">
-                    DELETED = #{deleted,jdbcType=INTEGER},
-                </if>
-                <if test="deleteTime != null">
-                    DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},
-                </if>
+            <if test="name != null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="enable != null">
+                ENABLE = #{enable,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleted != null">
+                DELETED = #{deleted,jdbcType=INTEGER},
+            </if>
+            <if test="deleteTime != null">
+                DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},
+            </if>
         </set>
-        where   ID = #{id,jdbcType=INTEGER} 
+        where ID = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.Role">
         update role
-        set 
-            NAME =  #{name,jdbcType=VARCHAR},
-            ENABLE =  #{enable,jdbcType=INTEGER},
-            DESCRIPTION =  #{description,jdbcType=VARCHAR},
-            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP},
-            DELETED =  #{deleted,jdbcType=INTEGER},
-            DELETE_TIME =  #{deleteTime,jdbcType=TIMESTAMP}
-        where   ID = #{id,jdbcType=INTEGER} 
+        set NAME        = #{name,jdbcType=VARCHAR},
+            ENABLE      = #{enable,jdbcType=INTEGER},
+            DESCRIPTION = #{description,jdbcType=VARCHAR},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            DELETED     = #{deleted,jdbcType=INTEGER},
+            DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateNameById">
-        update role set NAME = #{name,jdbcType=VARCHAR} where id = #{id,jdbcType=BIGINT}
+        update role
+        set NAME = #{name,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="updateEnableById">
-        update role set ENABLE = #{enable,jdbcType=BIGINT} where id = #{id,jdbcType=BIGINT}
+        update role
+        set ENABLE = #{enable,jdbcType=BIGINT}
+        where id = #{id,jdbcType=BIGINT}
     </update>
 </mapper>

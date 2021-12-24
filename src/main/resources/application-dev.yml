@@ -63,5 +63,5 @@ spring:
 jwt:
   tokenHeader: Authorization
   secret: my-springsecurity-plus
-  expiration: 604800
+  expiration: 86400000
   token-prefix: 'Bearer '

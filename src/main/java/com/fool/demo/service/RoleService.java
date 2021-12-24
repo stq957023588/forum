@@ -31,7 +31,7 @@ public class RoleService {
 
     public void update(RoleDTO role) {
 
-        Role r = roleMapper.selectByName(role.getName());
+        Role r = roleMapper.selectByNameAndNotEqualsId(role.getName(), role.getId());
         if (r != null) {
             throw new RuntimeException("the same name role exist");
         }

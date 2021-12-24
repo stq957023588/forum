@@ -1,5 +1,6 @@
 package com.fool.demo.config;
 
+import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +51,9 @@ public class BeanConfig {
         // 此处获取的是不可修改的list,所以在下面需要重新创建一个list实例
         List<MediaType> supportedMediaTypes = fastJsonHttpMessageConverter.getSupportedMediaTypes();
         MediaType mediaType = new MediaType("application", "json", 1.0);
+
+        FastJsonConfig fastJsonConfig = fastJsonHttpMessageConverter.getFastJsonConfig();
+        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
 
         ArrayList<MediaType> mediaTypes = new ArrayList<>(supportedMediaTypes);
         mediaTypes.add(mediaType);

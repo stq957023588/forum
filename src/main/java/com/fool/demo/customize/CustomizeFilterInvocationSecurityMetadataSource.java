@@ -2,7 +2,7 @@ package com.fool.demo.customize;
 
 
 import com.fool.demo.domain.Role;
-import com.fool.demo.mapper.AuthorityMapper;
+import com.fool.demo.mapper.RoleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -22,18 +22,20 @@ import java.util.stream.Collectors;
 @Component
 public class CustomizeFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
-    private final AuthorityMapper authorityMapper;
+    private final RoleMapper roleMapper;
 
-
-    public CustomizeFilterInvocationSecurityMetadataSource(AuthorityMapper authorityMapper) {
-        this.authorityMapper = authorityMapper;
+    public CustomizeFilterInvocationSecurityMetadataSource(RoleMapper roleMapper) {
+        this.roleMapper = roleMapper;
     }
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
+        FilterInvocation filterInvocation = (FilterInvocation) o;
+        // 获取HTTP请求防范,GET,POST....
+        String method = filterInvocation.getRequest().getMethod();
         //获取请求地址
-        String requestUrl = ((FilterInvocation) o).getRequestUrl();
-        log.debug("Request url:{}", requestUrl);
+        String requestUrl = filterInvocation.getRequestUrl();
+        log.debug("Request url:{},method:{}", requestUrl, method);
 
         if (requestUrl.contains("?")) {
             int indexOfQuestionMark = requestUrl.indexOf("?");
@@ -41,7 +43,7 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
         }
 
         // 查询拥有该路径权限的角色
-        List<Role> roles = authorityMapper.selectRolesByUrl(requestUrl);
+        List<Role> roles = roleMapper.selectRolesByUrlAndMethod(requestUrl, method);
 
         // String[] attributes = {"ADMIN"};
         // return SecurityConfig.createList(attributes);

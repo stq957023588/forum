@@ -1,13 +1,16 @@
 package com.fool.demo.mapper;
 
 import com.fool.demo.domain.Authority;
-import com.fool.demo.domain.Role;
+import com.fool.demo.entity.RoleAuthorityQUERY;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
  * @Entity com.fool.demo.domain.Authority
  */
+@Mapper
 public interface AuthorityMapper {
 
     int deleteByPrimaryKey(Long id);
@@ -22,7 +25,17 @@ public interface AuthorityMapper {
 
     int updateByPrimaryKey(Authority record);
 
-    List<Role> selectRolesByUrl(String url);
+    List<Authority> selectAll();
+
+    List<Authority> selectByRoleAuthorityParams(RoleAuthorityQUERY query);
+
+    Authority selectByUrl(String url);
+
+    Authority selectByUrlAndMethod(@Param("url") String url, @Param("method") String method);
+
+    Authority selectByUrlAndMethodAndNotEqualsId(@Param("url") String url, @Param("method") String method, @Param("id") Integer id);
+
+
 }
 
 

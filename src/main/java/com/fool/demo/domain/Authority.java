@@ -21,6 +21,11 @@ public class Authority implements Serializable {
     private String name;
 
     /**
+     * 描述
+     */
+    private String description;
+
+    /**
      * 接口地址
      */
     private String url;
@@ -29,6 +34,11 @@ public class Authority implements Serializable {
      * HTTP请求方法,GET,POST
      */
     private String method;
+
+    /**
+     * 创建人
+     */
+    private Integer creator;
 
     /**
      * 创建时间
