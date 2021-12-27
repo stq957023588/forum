@@ -2,6 +2,7 @@ package com.fool.demo.controller;
 
 import com.fool.demo.entity.AuthorityDTO;
 import com.fool.demo.entity.CommonQUERY;
+import com.fool.demo.entity.RoleAuthorityDmlDTO;
 import com.fool.demo.entity.RoleAuthorityQUERY;
 import com.fool.demo.service.AuthorityService;
 import com.github.pagehelper.PageInfo;
@@ -31,6 +32,21 @@ public class AuthorityController {
     @RequestMapping(value = "role-authority", method = RequestMethod.GET)
     public PageInfo<AuthorityDTO> getRoleAuthority(RoleAuthorityQUERY query) {
         return authorityService.getRoleAuthority(query);
+    }
+
+    @RequestMapping(value = "role-authority-reverse", method = RequestMethod.GET)
+    public PageInfo<AuthorityDTO> getAuthorityThatRoleDontHave(RoleAuthorityQUERY query) {
+        return authorityService.getAuthorityThatRoleDontHave(query);
+    }
+
+    @RequestMapping(value = "role-authority", method = RequestMethod.POST)
+    public void addRoleAuthority(@RequestBody RoleAuthorityDmlDTO dto) {
+        authorityService.addRoleAuthority(dto);
+    }
+
+    @RequestMapping(value = "role-authority", method = RequestMethod.DELETE)
+    public void deleteRoleAuthority(@RequestBody RoleAuthorityDmlDTO dto) {
+        authorityService.deleteRoleAuthority(dto);
     }
 
     @RequestMapping(value = "authority", method = RequestMethod.POST)

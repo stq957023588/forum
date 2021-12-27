@@ -10,6 +10,8 @@ import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author fool
  * @date 2021/12/16 15:27
@@ -24,6 +26,10 @@ public class RoleService {
     }
 
     public void add(RoleDTO role) {
+        Role exist = roleMapper.selectByName(role.getName());
+        if (exist != null) {
+            throw new RuntimeException("the same name role exist");
+        }
         Role entity = RoleConvertor.INSTANCE.toDomain(role);
         roleMapper.insertSelective(entity);
 
@@ -44,6 +50,10 @@ public class RoleService {
     public PageInfo<RoleDTO> getRoles(CommonQUERY query) {
         ISelect select = roleMapper::selectAll;
         return PageUtils.doSelect(select, query);
+    }
+
+    public void delete(List<Integer> roleIdList) {
+        roleMapper.deleteLogicByIdList(roleIdList);
     }
 
 }

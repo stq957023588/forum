@@ -10,6 +10,9 @@ import com.fool.demo.utils.TreeUtils;
 import com.fool.demo.utils.UserUtils;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,12 +29,23 @@ public class MenuService {
 
     private final MenuMapper menuMapper;
 
-    public MenuService(MenuMapper menuMapper) {
+    private final SqlSessionFactory sqlSessionFactory;
+
+    public MenuService(MenuMapper menuMapper, SqlSessionFactory sqlSessionFactory) {
         this.menuMapper = menuMapper;
+        this.sqlSessionFactory = sqlSessionFactory;
     }
 
+    public void delete(List<Integer> idList) {
+        menuMapper.deleteLogicByIdList(idList);
+    }
 
     public void add(MenuDTO menu) {
+        Menu exist = menuMapper.selectByUrl(menu.getUrl());
+        if (exist != null) {
+            throw new RuntimeException("已存在相同路径");
+        }
+
         Menu m = MenuConvertor.INSTANCE.toDomain(menu);
 
         CustomizeUser currentUser = UserUtils.getCurrentUserDetails();
@@ -41,7 +55,7 @@ public class MenuService {
 
     public void update(MenuDTO menu) {
         Menu exist = menuMapper.selectByUrlAndNotEqualsId(menu.getUrl(), menu.getId());
-        if (exist != null){
+        if (exist != null) {
             throw new RuntimeException("已存在相同路径");
         }
         Menu origin = menuMapper.selectByPrimaryKey(menu.getId().longValue());
@@ -62,8 +76,62 @@ public class MenuService {
         return TreeUtils.listToTree(treeNodeList);
     }
 
+    public List<MenuDTO> getRoleMenus(RoleMenuQUERY query) {
+        List<Menu> menus = query.isLeafOnly() ? menuMapper.selectRoleMenuTreeLeaf(query.getRoleId()) : menuMapper.selectRoleMenu(query.getRoleId());
+        return menus.stream().map(MenuConvertor.INSTANCE::toDataTransferObject).collect(Collectors.toList());
+    }
 
-    public List<MenuRoleDTO> getRoleMenus() {
+    public void saveRoleMenus(RoleMenuSaveDTO dto) {
+        List<Integer> existMenuIdList = menuMapper.selectMenuIdByRoleId(dto.getRoleId());
+
+        List<Integer> newMenuIdList = dto.getMenus().stream().map(MenuDTO::getId).sorted().collect(Collectors.toList());
+
+        int existIndex = 0;
+        int newIndex = 0;
+
+        List<Integer> deleteIdList = new ArrayList<>();
+        List<Integer> insertIdList = new ArrayList<>();
+
+        while (existIndex < existMenuIdList.size() && newIndex < newMenuIdList.size()) {
+            int existMenuId = existMenuIdList.get(existIndex);
+            int newMenuId = newMenuIdList.get(newIndex);
+            if (newMenuId > existMenuId) {
+                deleteIdList.add(existMenuId);
+                existIndex++;
+                continue;
+            }
+            if (newMenuId < existMenuId) {
+                insertIdList.add(newMenuId);
+                newIndex++;
+                continue;
+            }
+            existIndex++;
+            newIndex++;
+        }
+
+        for (int i = existIndex; i < existMenuIdList.size(); i++) {
+            deleteIdList.add(existMenuIdList.get(i));
+        }
+        for (int i = newIndex; i < newMenuIdList.size(); i++) {
+            insertIdList.add(newMenuIdList.get(i));
+        }
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
+            MenuMapper mapper = sqlSession.getMapper(MenuMapper.class);
+            for (Integer menuId : deleteIdList) {
+                mapper.deleteRoleMenu(dto.getRoleId(), menuId);
+            }
+            for (Integer menuId : insertIdList) {
+                mapper.insertRoleMenu(dto.getRoleId(), menuId);
+            }
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public List<MenuRoleDTO> getRoleMenuTree() {
         List<MenuExtra> menuExtras = menuMapper.selectAllWithRole();
 
         ArrayList<MenuRoleDTO> menus = new ArrayList<>();

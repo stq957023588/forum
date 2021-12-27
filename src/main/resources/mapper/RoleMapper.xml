@@ -43,22 +43,32 @@
         select *
         from role
         where NAME = #{name,jdbcType=VARCHAR}
+        and deleted = 0
     </select>
+    <update id="deleteLogicByIdList" parameterType="java.util.List">
+        update role set DELETED = 1,DELETE_TIME = now() where
+        <foreach collection="idList" item="id" separator="," open="id in (" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+
+    </update>
     <select id="selectAll" resultType="com.fool.demo.domain.Role">
         select *
         from role
+        where DELETED = 0
     </select>
     <select id="selectByNameAndNotEqualsId" resultType="com.fool.demo.domain.Role">
         select *
         from role
         where NAME = #{name,jdbcType=VARCHAR}
           and id != #{id,jdbcType=BIGINT}
+          and deleted = 0
     </select>
     <select id="selectRolesByUrlAndMethod" resultType="com.fool.demo.domain.Role">
         select r.*
         from role_authority_relation rar
                  join authority a on a.id = rar.AUTHORITY_ID
-                 join role r on r.id = rar.ROLE_ID
+                 join role r on r.id = rar.ROLE_ID and DELETED = 0
         where a.URL = #{url,jdbcType=VARCHAR}
           and a.method = #{method,jdbcType=VARCHAR}
     </select>

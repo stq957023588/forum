@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author fool
  * @date 2021/12/23 17:01
@@ -37,4 +39,9 @@ public class RoleController {
         roleService.update(role);
     }
 
+
+    @RequestMapping(value = "role", method = RequestMethod.DELETE)
+    public void delete(@RequestBody List<Integer> roleIdList) {
+        roleService.delete(roleIdList);
+    }
 }

@@ -3,6 +3,7 @@ package com.fool.demo.service;
 import com.fool.demo.domain.Authority;
 import com.fool.demo.entity.AuthorityDTO;
 import com.fool.demo.entity.CommonQUERY;
+import com.fool.demo.entity.RoleAuthorityDmlDTO;
 import com.fool.demo.entity.RoleAuthorityQUERY;
 import com.fool.demo.mapper.AuthorityMapper;
 import com.fool.demo.mapstruct.AuthorityConvertor;
@@ -10,6 +11,10 @@ import com.fool.demo.utils.PageUtils;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author fool
@@ -34,6 +39,11 @@ public class AuthorityService {
         return PageUtils.doSelect(select, query, AuthorityConvertor.INSTANCE::toDataTransferObject);
     }
 
+    public PageInfo<AuthorityDTO> getAuthorityThatRoleDontHave(RoleAuthorityQUERY query) {
+        ISelect select = () -> authorityMapper.selectRoleDontHaveAuthority(query);
+        return PageUtils.doSelect(select, query, AuthorityConvertor.INSTANCE::toDataTransferObject);
+    }
+
     public void add(AuthorityDTO authority) {
         Authority exist = authorityMapper.selectByUrlAndMethod(authority.getUrl(), authority.getMethod());
         if (exist != null) {
@@ -55,5 +65,18 @@ public class AuthorityService {
         authorityMapper.updateByPrimaryKey(update);
 
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void addRoleAuthority(RoleAuthorityDmlDTO dto) {
+        for (AuthorityDTO authority : dto.getAuthorities()) {
+            authorityMapper.insertRoleAuthority(dto.getRoleId(), authority.getId());
+        }
+    }
+
+    public void deleteRoleAuthority(RoleAuthorityDmlDTO dto) {
+        List<Integer> authorityIds = dto.getAuthorities().stream().map(AuthorityDTO::getId).collect(Collectors.toList());
+        authorityMapper.deleteRoleAuthority(dto.getRoleId(), authorityIds);
+    }
+
 
 }

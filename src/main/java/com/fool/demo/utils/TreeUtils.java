@@ -22,11 +22,17 @@ public class TreeUtils {
         List<T> currentFloor = roots;
         List<T> nextFloor = new ArrayList<>();
 
+        boolean flag = false;
         while (!children.isEmpty()) {
             Iterator<T> iterator = children.iterator();
+            if (flag) {
+                break;
+            }
+            flag = true;
             while (iterator.hasNext()) {
                 T next = iterator.next();
                 if (mountIfContainsParent(currentFloor, next)) {
+                    flag = false;
                     nextFloor.add(next);
                     iterator.remove();
                 }

@@ -29,12 +29,17 @@ public interface AuthorityMapper {
 
     List<Authority> selectByRoleAuthorityParams(RoleAuthorityQUERY query);
 
+    List<Authority> selectRoleDontHaveAuthority(RoleAuthorityQUERY query);
+
     Authority selectByUrl(String url);
 
     Authority selectByUrlAndMethod(@Param("url") String url, @Param("method") String method);
 
     Authority selectByUrlAndMethodAndNotEqualsId(@Param("url") String url, @Param("method") String method, @Param("id") Integer id);
 
+    int insertRoleAuthority(@Param("roleId")Integer roleId,@Param("authorityId")Integer authorityId);
+
+    int deleteRoleAuthority(@Param("roleId")Integer role,@Param("authorityIds")List<Integer> authorityIds);
 
 }
 

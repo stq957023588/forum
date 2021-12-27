@@ -1,9 +1,6 @@
 package com.fool.demo.controller;
 
-import com.fool.demo.entity.MenuDTO;
-import com.fool.demo.entity.MenuQUERY;
-import com.fool.demo.entity.MenuRoleDTO;
-import com.fool.demo.entity.MenuTreeNode;
+import com.fool.demo.entity.*;
 import com.fool.demo.service.MenuService;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +27,17 @@ public class MenuController {
 
     @RequestMapping(value = "role-menu-tree", method = RequestMethod.GET)
     public List<MenuRoleDTO> getRoleMenuTree() {
-        return menuService.getRoleMenus();
+        return menuService.getRoleMenuTree();
+    }
+
+    @RequestMapping(value = "role-menu", method = RequestMethod.GET)
+    public List<MenuDTO> getRoleMenu(RoleMenuQUERY query) {
+        return menuService.getRoleMenus(query);
+    }
+
+    @RequestMapping(value = "role-menu",method = RequestMethod.POST)
+    public void addRoleMenu(@RequestBody RoleMenuSaveDTO dto){
+        menuService.saveRoleMenus(dto);
     }
 
     @RequestMapping(value = "menu-tree", method = RequestMethod.GET)
@@ -55,5 +62,9 @@ public class MenuController {
         menuService.update(menu);
     }
 
+    @RequestMapping(value = "menu", method = RequestMethod.DELETE)
+    public void delete(@RequestBody List<Integer> idList) {
+        menuService.delete(idList);
+    }
 
 }

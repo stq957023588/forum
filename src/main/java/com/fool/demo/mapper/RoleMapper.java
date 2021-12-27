@@ -3,7 +3,6 @@ package com.fool.demo.mapper;
 import com.fool.demo.domain.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -40,6 +39,8 @@ public interface RoleMapper {
     int updateEnableById(@Param("enable") Integer enable, @Param("id") Integer id);
 
     List<Role> selectAll();
+
+    int deleteLogicByIdList(@Param("idList")List<Integer> idList);
 }
 
 

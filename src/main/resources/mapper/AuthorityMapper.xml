@@ -5,13 +5,13 @@
 <mapper namespace="com.fool.demo.mapper.AuthorityMapper">
 
     <resultMap id="BaseResultMap" type="com.fool.demo.domain.Authority">
-            <id property="id" column="ID" jdbcType="INTEGER"/>
-            <result property="name" column="NAME" jdbcType="VARCHAR"/>
-            <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
-            <result property="url" column="URL" jdbcType="VARCHAR"/>
-            <result property="method" column="METHOD" jdbcType="VARCHAR"/>
-            <result property="creator" column="CREATOR" jdbcType="INTEGER"/>
-            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <id property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
+        <result property="url" column="URL" jdbcType="VARCHAR"/>
+        <result property="method" column="METHOD" jdbcType="VARCHAR"/>
+        <result property="creator" column="CREATOR" jdbcType="INTEGER"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -22,96 +22,126 @@
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from authority
-        where  ID = #{id,jdbcType=INTEGER}
+        where ID = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectAll" resultType="com.fool.demo.domain.Authority">
-        select * from authority
+        select *
+        from authority
     </select>
     <select id="selectByUrl" resultType="com.fool.demo.domain.Authority">
-        select * from authority where URL=#{url,jdbcType=VARCHAR}
+        select *
+        from authority
+        where URL = #{url,jdbcType=VARCHAR}
     </select>
     <select id="selectByUrlAndMethodAndNotEqualsId" resultType="com.fool.demo.domain.Authority">
-        select * from authority where URL = #{url,jdbcType=VARCHAR} and method = #{method,jdbcType=VARCHAR} and id != #{id,jdbcType=BIGINT}
+        select *
+        from authority
+        where URL = #{url,jdbcType=VARCHAR}
+          and method = #{method,jdbcType=VARCHAR}
+          and id != #{id,jdbcType=BIGINT}
     </select>
     <select id="selectByUrlAndMethod" resultType="com.fool.demo.domain.Authority">
-        select * from authority where URL=#{url,jdbcType=VARCHAR} and method = #{method,jdbcType=VARCHAR}
+        select *
+        from authority
+        where URL = #{url,jdbcType=VARCHAR}
+          and method = #{method,jdbcType=VARCHAR}
     </select>
     <select id="selectByRoleAuthorityParams" resultType="com.fool.demo.domain.Authority">
-        select * from role_authority_relation rar
-        join authority a on a.id = rar.AUTHORITY_ID
+        select a.*
+        from role_authority_relation rar
+                 join authority a on a.id = rar.AUTHORITY_ID
         where rar.ROLE_ID = #{roleId,jdbcType=BIGINT}
     </select>
+    <select id="selectRoleDontHaveAuthority" resultType="com.fool.demo.domain.Authority">
+        select *
+        from authority a
+                 left join role_authority_relation rar
+                           on a.id = rar.AUTHORITY_ID and rar.ROLE_ID = #{roleId,jdbcType=BIGINT}
+        where rar.id is null
+    </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from authority
-        where  ID = #{id,jdbcType=INTEGER}
-    </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Authority" useGeneratedKeys="true">
-        insert into authority
-        ( ID,NAME,DESCRIPTION
-        ,URL,METHOD,CREATOR
-        ,CREATE_TIME)
-        values (#{id,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR}
-        ,#{url,jdbcType=VARCHAR},#{method,jdbcType=VARCHAR},#{creator,jdbcType=INTEGER}
-        ,#{createTime,jdbcType=TIMESTAMP}))
+    <insert id="insertRoleAuthority">
+        insert into role_authority_relation(role_id, AUTHORITY_ID)
+        values (#{roleId,jdbcType=BIGINT}, #{authorityId,jdbcType=BIGINT})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Authority" useGeneratedKeys="true">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from authority
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteRoleAuthority">
+        delete from role_authority_relation where ROLE_ID =#{roleId,jdbcType=BIGINT} and
+        <foreach collection="authorityIds" item="authorityId" open="authority_id in (" close=")" separator=",">
+            #{authorityId,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Authority"
+            useGeneratedKeys="true">
+        insert into authority
+        ( ID, NAME, DESCRIPTION
+        , URL, METHOD, CREATOR
+        , CREATE_TIME)
+        values ( #{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}
+               , #{url,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{creator,jdbcType=INTEGER}
+               , #{createTime,jdbcType=TIMESTAMP}) )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Authority"
+            useGeneratedKeys="true">
         insert into authority
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="id != null">id,</if>
-                <if test="name != null">name,</if>
-                <if test="description != null">description,</if>
-                <if test="url != null">url,</if>
-                <if test="method != null">method,</if>
-                <if test="creator != null">creator,</if>
-                <if test="createTime != null">createTime,</if>
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="url != null">url,</if>
+            <if test="method != null">method,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">createTime,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">#{id,jdbcType=INTEGER},</if>
-                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
-                <if test="description != null">#{description,jdbcType=VARCHAR},</if>
-                <if test="url != null">#{url,jdbcType=VARCHAR},</if>
-                <if test="method != null">#{method,jdbcType=VARCHAR},</if>
-                <if test="creator != null">#{creator,jdbcType=INTEGER},</if>
-                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+            <if test="description != null">#{description,jdbcType=VARCHAR},</if>
+            <if test="url != null">#{url,jdbcType=VARCHAR},</if>
+            <if test="method != null">#{method,jdbcType=VARCHAR},</if>
+            <if test="creator != null">#{creator,jdbcType=INTEGER},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.Authority">
         update authority
         <set>
-                <if test="name != null">
-                    NAME = #{name,jdbcType=VARCHAR},
-                </if>
-                <if test="description != null">
-                    DESCRIPTION = #{description,jdbcType=VARCHAR},
-                </if>
-                <if test="url != null">
-                    URL = #{url,jdbcType=VARCHAR},
-                </if>
-                <if test="method != null">
-                    METHOD = #{method,jdbcType=VARCHAR},
-                </if>
-                <if test="creator != null">
-                    CREATOR = #{creator,jdbcType=INTEGER},
-                </if>
-                <if test="createTime != null">
-                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-                </if>
+            <if test="name != null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                URL = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                METHOD = #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
         </set>
-        where   ID = #{id,jdbcType=INTEGER}
+        where ID = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.Authority">
         update authority
-        set
-            NAME =  #{name,jdbcType=VARCHAR},
-            DESCRIPTION =  #{description,jdbcType=VARCHAR},
-            URL =  #{url,jdbcType=VARCHAR},
-            METHOD =  #{method,jdbcType=VARCHAR},
-            CREATOR =  #{creator,jdbcType=INTEGER},
-            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP}
-        where   ID = #{id,jdbcType=INTEGER}
+        set NAME        = #{name,jdbcType=VARCHAR},
+            DESCRIPTION = #{description,jdbcType=VARCHAR},
+            URL         = #{url,jdbcType=VARCHAR},
+            METHOD      = #{method,jdbcType=VARCHAR},
+            CREATOR     = #{creator,jdbcType=INTEGER},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
     </update>
 </mapper>

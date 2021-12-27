@@ -37,24 +37,55 @@
     <select id="selectAllWithRole" resultType="com.fool.demo.domain.MenuExtra">
         select m.*, r.name role
         from menu m
-                 left join menu_role_relation mrr on m.id = mrr.MENU_ID
+                 left join role_menu_relation mrr on m.id = mrr.MENU_ID
                  left join role r on r.id = mrr.ROLE_ID
+        where m.DELETED = 0
         order by mrr.MENU_ID, mrr.ROLE_ID
     </select>
     <select id="selectAll" resultType="com.fool.demo.domain.Menu">
         select *
         from menu
+        where DELETED = 0
     </select>
     <select id="selectByUrlAndNotEqualsId" resultType="com.fool.demo.domain.Menu">
         select *
         from menu
         where url = #{url,jdbcType=VARCHAR}
           and id != #{id,jdbcType=BIGINT}
+          and deleted = 0
     </select>
     <select id="selectWithParentMenuName" resultType="com.fool.demo.entity.MenuDTO">
         select m.*, p.NAME parent_menu_name
         from menu m
-                 left join menu p on m.PARENT_MENU_ID = p.id
+                 left join menu p on m.PARENT_MENU_ID = p.id and p.DELETED = 0
+        where m.DELETED = 0
+    </select>
+    <select id="selectByUrl" resultType="com.fool.demo.domain.Menu">
+        select *
+        from menu
+        where DELETED = 0
+          and url = #{url,jdbcType=VARCHAR}
+    </select>
+    <select id="selectRoleMenu" resultType="com.fool.demo.domain.Menu">
+        select m.*
+        from role_menu_relation rmr
+                 join menu m on rmr.MENU_ID = m.ID
+        where rmr.ROLE_ID = #{roleId,jdbcType=BIGINT}
+    </select>
+    <select id="selectMenuIdByRoleId" resultType="java.lang.Integer">
+        select MENU_ID
+        from role_menu_relation
+        where ROLE_ID = #{roleId,jdbcType=BIGINT}
+        order by menu_id
+    </select>
+    <select id="selectRoleMenuTreeLeaf" resultType="com.fool.demo.domain.Menu">
+        select m.*
+        from role_menu_relation rmr
+        join menu m on rmr.MENU_ID = m.ID
+        left join menu p on rmr.MENU_ID =  p.PARENT_MENU_ID
+        where ROLE_ID = #{roleId,jdbcType=BIGINT}
+            and p.id is null
+        order by menu_id
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -62,6 +93,16 @@
         from menu
         where ID = #{id,jdbcType=INTEGER}
     </delete>
+    <delete id="deleteRoleMenu">
+        delete from role_menu_relation where ROLE_ID =#{roleId,jdbcType=BIGINT} and MENU_ID=#{menuId,jdbcType=BIGINT}
+    </delete>
+    <update id="deleteLogicByIdList" parameterType="java.util.List">
+        update menu set DELETED = 1,DELETE_TIME = now() where
+        <foreach collection="idList" item="id" separator="," open="id in (" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Menu"
             useGeneratedKeys="true">
         insert into menu
@@ -109,6 +150,9 @@
             <if test="deleter != null">#{deleter,jdbcType=INTEGER},</if>
             <if test="deleteTime != null">#{deleteTime,jdbcType=TIMESTAMP},</if>
         </trim>
+    </insert>
+    <insert id="insertRoleMenu">
+        insert into role_menu_relation(menu_id, role_id) values (#{menuId,jdbcType=BIGINT},#{roleId,jdbcType=BIGINT})
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.Menu">
         update menu

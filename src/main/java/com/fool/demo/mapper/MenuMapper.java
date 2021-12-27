@@ -16,11 +16,19 @@ public interface MenuMapper {
 
     int deleteByPrimaryKey(Long id);
 
+    int deleteRoleMenu(@Param("roleId") Integer roleId, @Param("menuId") Integer menuId);
+
+    int deleteLogicByIdList(@Param("idList") List<Integer> idList);
+
     int insert(Menu record);
 
     int insertSelective(Menu record);
 
+    int insertRoleMenu(@Param("roleId") Integer roleId, @Param("menuId") Integer menuId);
+
     Menu selectByPrimaryKey(Long id);
+
+    Menu selectByUrl(@Param("url") String url);
 
     Menu selectByUrlAndNotEqualsId(@Param("url") String url, @Param("id") Integer id);
 
@@ -34,6 +42,11 @@ public interface MenuMapper {
 
     List<MenuDTO> selectWithParentMenuName();
 
+    List<Menu> selectRoleMenu(Integer roleId);
+
+    List<Menu> selectRoleMenuTreeLeaf(Integer roleId);
+
+    List<Integer> selectMenuIdByRoleId(Integer roleId);
 }
 
 
