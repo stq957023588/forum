@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.WhiteListMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.WhiteList">
+        <id property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="whiteId" column="WHITE_ID" jdbcType="INTEGER"/>
+        <result property="type" column="TYPE" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,WHITE_ID,TYPE,
+        CREATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from white_list
+        where ID = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByType" resultType="com.fool.demo.domain.WhiteList">
+        select *
+        from white_list
+        where TYPE = #{type,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByWhiteIdAndType" resultType="com.fool.demo.domain.WhiteList">
+        select *
+        from white_list
+        where WHITE_ID = #{whiteId,jdbcType=BIGINT}
+          and type = #{type,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from white_list
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByIdList">
+        delete from white_list where
+        <foreach collection="idList" item="id" separator="," open="id in (" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.WhiteList"
+            useGeneratedKeys="true">
+        insert into white_list
+        ( ID, WHITE_ID, TYPE
+        , CREATE_TIME)
+        values ( #{id,jdbcType=INTEGER}, #{whiteId,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}
+               , #{createTime,jdbcType=TIMESTAMP}) )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.WhiteList"
+            useGeneratedKeys="true">
+        insert into white_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="whiteId != null">white_id,</if>
+            <if test="type != null">type,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="whiteId != null">#{whiteId,jdbcType=INTEGER},</if>
+            <if test="type != null">#{type,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.WhiteList">
+        update white_list
+        <set>
+            <if test="whiteId != null">
+                WHITE_ID = #{whiteId,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                TYPE = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.WhiteList">
+        update white_list
+        set WHITE_ID    = #{whiteId,jdbcType=INTEGER},
+            TYPE        = #{type,jdbcType=VARCHAR},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.DataRuleMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.DataRule">
+        <id property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="field" column="FIELD" jdbcType="VARCHAR"/>
+        <result property="condition" column="CONDITION" jdbcType="VARCHAR"/>
+        <result property="value" column="VALUE" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,NAME,FIELD,
+        `CONDITION`,VALUE,CREATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from data_rule
+        where ID = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByGroup" resultType="com.fool.demo.domain.DataRule">
+        select *
+        from data_rule dr
+                 join data_rule_group_member drgm on dr.id = drgm.DATA_RULE_ID
+        where drgm.DATA_RULE_GROUP_ID = #{dataRuleGroupId,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultType="com.fool.demo.domain.DataRule">
+        select *
+        from data_rule
+    </select>
+    <select id="selectDontHaveByGroup" resultType="com.fool.demo.domain.DataRule">
+        select *
+        from data_rule dr
+                 left join data_rule_group_member drgm
+                           on dr.id = drgm.DATA_RULE_ID and drgm.DATA_RULE_GROUP_ID = #{dataRuleGroupId,jdbcType=BIGINT}
+        where drgm.id is null
+
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from data_rule
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByIdList">
+        delete from data_rule where
+        <foreach collection="idList" item="id" separator="," open="id in (" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.DataRule"
+            useGeneratedKeys="true">
+        insert into data_rule
+        ( ID, NAME, FIELD
+        , `CONDITION`, VALUE, CREATE_TIME)
+        values ( #{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{field,jdbcType=VARCHAR}
+               , #{condition,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}) )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.DataRule"
+            useGeneratedKeys="true">
+        insert into data_rule
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="field != null">field,</if>
+            <if test="condition != null">`condition`,</if>
+            <if test="value != null">value,</if>
+            <if test="createTime != null">createTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+            <if test="field != null">#{field,jdbcType=VARCHAR},</if>
+            <if test="condition != null">#{condition,jdbcType=VARCHAR},</if>
+            <if test="value != null">#{value,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.DataRule">
+        update data_rule
+        <set>
+            <if test="name != null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="field != null">
+                FIELD = #{field,jdbcType=VARCHAR},
+            </if>
+            <if test="condition != null">
+                `CONDITION` = #{condition,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                VALUE = #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.DataRule">
+        update data_rule
+        set NAME        = #{name,jdbcType=VARCHAR},
+            FIELD       = #{field,jdbcType=VARCHAR},
+            `CONDITION` = #{condition,jdbcType=VARCHAR},
+            VALUE       = #{value,jdbcType=VARCHAR},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

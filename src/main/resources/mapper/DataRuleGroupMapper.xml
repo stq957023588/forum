@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.DataRuleGroupMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.DataRuleGroup">
+        <id property="id" column="ID" jdbcType="INTEGER"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="enable" column="ENABLE" jdbcType="INTEGER"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,NAME,ENABLE,
+        CREATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from data_rule_group
+        where ID = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByAuthority" resultType="com.fool.demo.domain.DataRuleGroup">
+        select *
+        from data_rule_group drg
+                 join authority_data_rule_group adr on drg.id = adr.DATA_RULE_GROUP_ID
+        where adr.AUTHORITY_ID = #{authorityId,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultType="com.fool.demo.domain.DataRuleGroup">
+        select *
+        from data_rule_group
+    </select>
+    <select id="selectDontHaveByAuthority" resultType="com.fool.demo.domain.DataRuleGroup">
+        select drg.*
+        from data_rule_group drg
+                 left join authority_data_rule_group adrg
+                           on adrg.DATA_RULE_GROUP_ID = drg.id and adrg.AUTHORITY_ID = #{authorityId,jdbcType=BIGINT}
+        where adrg.id is null
+    </select>
+    <select id="selectAuthorityAndDataRuleGroup" resultType="com.fool.demo.domain.AuthorityAndDataRuleGroup">
+        select adrg.AUTHORITY_ID, adrg.DATA_RULE_GROUP_ID, a.NAME authority_name, drg.NAME data_rule_group_name
+        from authority a
+                 join authority_data_rule_group adrg on adrg.AUTHORITY_ID = a.id
+                 join data_rule_group drg on drg.id = adrg.DATA_RULE_GROUP_ID
+        order by a.ID
+    </select>
+    <select id="selectCheckedAuthorityAndDataRuleGroup"
+            resultType="com.fool.demo.domain.AuthorityAndDataRuleGroup">
+        select rar.AUTHORITY_ID, radrgr.DATA_RULE_GROUP_ID, a.NAME authority_name, drg.NAME data_rule_group_name
+        from role_authority_relation rar
+                 join role_authority_data_rule_group_relation radrgr on rar.id = radrgr.ROLE_AUTHORITY_RELATION_ID
+                 join authority a on a.id = rar.AUTHORITY_ID
+                 join data_rule_group drg on radrgr.DATA_RULE_GROUP_ID = drg.ID
+        where rar.ROLE_ID = #{roleId,jdbcType=BIGINT}
+    </select>
+    <select id="selectRoleAuthorityRelationId" resultType="java.lang.Integer">
+        select id
+        from role_authority_relation
+        where ROLE_ID = #{roleId,jdbcType=BIGINT}
+          and authority_id = #{authorityId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from data_rule_group
+        where ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByIdList">
+        delete from data_rule_group where
+        <foreach collection="idList" item="id" separator="," open="id in (" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <delete id="deleteDataRuleGroupMembers">
+        delete from data_rule_group_member where DATA_RULE_GROUP_ID = #{dataRuleGroupId,jdbcType=BIGINT}
+        <foreach collection="dataRuleIdList" item="dataRuleId" separator="," open="and data_rule_id in (" close=")">
+            #{dataRuleId,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <delete id="deleteAuthorityDataRuleGroups">
+        delete from authority_data_rule_group where AUTHORITY_ID =#{authorityId,jdbcType=BIGINT}
+        <foreach collection="dataRuleGroupIdList" item="dataRuleGroupId" separator=","
+                 open="and data_rule_group_id in (" close=")">
+            #{dataRuleGroupId,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <delete id="deleteRoleAuthorityDataRuleGroup">
+        delete
+        from role_authority_data_rule_group_relation
+        where ROLE_AUTHORITY_RELATION_ID in
+              (select id from role_authority_relation where ROLE_ID = #{roleId,jdbcType=BIGINT})
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.DataRuleGroup"
+            useGeneratedKeys="true">
+        insert into data_rule_group
+        ( ID, NAME, ENABLE
+        , CREATE_TIME)
+        values ( #{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{enable,jdbcType=INTEGER}
+               , #{createTime,jdbcType=TIMESTAMP}) )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.DataRuleGroup"
+            useGeneratedKeys="true">
+        insert into data_rule_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="enable != null">enable,</if>
+            <if test="createTime != null">createTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=INTEGER},</if>
+            <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+            <if test="enable != null">#{enable,jdbcType=INTEGER},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <insert id="insertDataRuleGroupMember">
+        insert into data_rule_group_member(data_rule_group_id, data_rule_id)
+        VALUES (#{dataRuleGroupId,jdbcType=BIGINT}, #{dataRuleId,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertAuthorityDataRuleGroup">
+        insert into authority_data_rule_group(authority_id, data_rule_group_id)
+        VALUES (#{authorityId,jdbcType=BIGINT}, #{dataRuleGroupId,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertRoleAuthorityDataRuleGroup">
+        insert into role_authority_data_rule_group_relation(role_authority_relation_id, data_rule_group_id)
+        values (#{roleAuthorityRelationId,jdbcType=BIGINT}, #{dataRuleGroupId,jdbcType=BIGINT})
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.DataRuleGroup">
+        update data_rule_group
+        <set>
+            <if test="name != null">
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="enable != null">
+                ENABLE = #{enable,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.DataRuleGroup">
+        update data_rule_group
+        set NAME        = #{name,jdbcType=VARCHAR},
+            ENABLE      = #{enable,jdbcType=INTEGER},
+            CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
