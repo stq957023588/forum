@@ -1,10 +1,14 @@
 package com.fool.demo.mapper;
 
 import com.fool.demo.domain.User;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * @Entity com.fool.demo.domain.User
  */
+@Mapper
 public interface UserMapper {
 
     int deleteByPrimaryKey(Long id);
@@ -20,6 +24,8 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     User selectByEmail(String email);
+
+    List<User> selectAll();
 }
 
 

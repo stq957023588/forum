@@ -59,9 +59,13 @@ spring:
       default-data-source-name: forum
     props:
       sql:
-        show: true # 打印 SQL
+        show: false # 打印 SQL
 jwt:
   tokenHeader: Authorization
   secret: my-springsecurity-plus
   expiration: 86400000
   token-prefix: 'Bearer '
+
+security:
+  super-role: SuperAdmin
+  default-password: 123456

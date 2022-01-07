@@ -14,17 +14,25 @@ public class CustomizeUser extends User {
 
     private final String name;
 
-    public CustomizeUser(Integer id,String name, String username, String password, List<GrantedAuthority> authorities) {
+    private final String avatar;
+
+
+    public CustomizeUser(Integer id, String name, String avatar, String username, String password, List<GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.name = name;
-        this.id  = id   ;
+        this.avatar = avatar;
+        this.id = id;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public Integer getId   (){
+    public Integer getId() {
         return this.id;
+    }
+
+    public String getAvatar(){
+        return this.avatar;
     }
 }

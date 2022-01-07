@@ -3,6 +3,7 @@ package com.fool.demo.mapper;
 import com.fool.demo.domain.Menu;
 import com.fool.demo.domain.MenuExtra;
 import com.fool.demo.entity.MenuDTO;
+import com.fool.demo.utils.PrimarySelector;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @Entity com.fool.demo.domain.Menu
  */
 @Mapper
-public interface MenuMapper {
+public interface MenuMapper extends PrimarySelector<Menu> {
 
     int deleteByPrimaryKey(Long id);
 
@@ -26,6 +27,7 @@ public interface MenuMapper {
 
     int insertRoleMenu(@Param("roleId") Integer roleId, @Param("menuId") Integer menuId);
 
+    @Override
     Menu selectByPrimaryKey(Long id);
 
     Menu selectByUrl(@Param("url") String url);
@@ -37,6 +39,10 @@ public interface MenuMapper {
     int updateByPrimaryKey(Menu record);
 
     List<MenuExtra> selectAllWithRole();
+
+    List<Menu> selectWhiteList();
+
+    List<Menu> selectLimitedMenus();
 
     List<Menu> selectAll();
 

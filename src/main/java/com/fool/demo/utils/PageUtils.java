@@ -21,13 +21,13 @@ import java.util.stream.Collector;
 public class PageUtils {
 
     public static <T> PageInfo<T> doSelect(ISelect select, Pageable pageable) {
-        Function<T,T> transfer = o -> o;
+        Function<T, T> transfer = o -> o;
         return doSelect(select, pageable, transfer);
     }
 
 
     public static <T, R> PageInfo<R> doSelect(ISelect select, Pageable pageable, Function<T, R> transfer) {
-        Page<T> page = PageHelper.startPage(pageable.getPageNum(), pageable.getPageSize(), true)
+        Page<T> page = PageHelper.startPage(pageable.getPageNum(), pageable.getPageSize(), true, null, true)
                 .setOrderBy(pageable.getOrderBy())
                 .doSelectPage(select);
 

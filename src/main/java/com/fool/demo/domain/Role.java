@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 
+ *
  * @TableName role
  */
 @Data
@@ -16,7 +16,7 @@ public class Role implements Serializable {
     private Integer id;
 
     /**
-     * 
+     *
      */
     private String name;
 
@@ -46,4 +46,12 @@ public class Role implements Serializable {
     private Date deleteTime;
 
     private static final long serialVersionUID = 1L;
+
+    public Role(){
+
+    }
+
+    public Role(String name)    {
+        this.name = name;
+    }
 }

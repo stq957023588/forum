@@ -1,17 +1,23 @@
 package com.fool.demo.customize;
 
 
+import com.fool.demo.domain.Authority;
 import com.fool.demo.domain.Role;
+import com.fool.demo.mapper.AuthorityMapper;
 import com.fool.demo.mapper.RoleMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -24,8 +30,19 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
 
     private final RoleMapper roleMapper;
 
-    public CustomizeFilterInvocationSecurityMetadataSource(RoleMapper roleMapper) {
+    private final AuthorityMapper authorityMapper;
+
+    private Role superRole;
+
+    @Value("${security.super-role}")
+    public void setSuperRole(String superRole) {
+        this.superRole = new Role();
+        this.superRole.setName(superRole);
+    }
+
+    public CustomizeFilterInvocationSecurityMetadataSource(RoleMapper roleMapper, AuthorityMapper authorityMapper) {
         this.roleMapper = roleMapper;
+        this.authorityMapper = authorityMapper;
     }
 
     @Override
@@ -42,9 +59,30 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
             requestUrl = requestUrl.substring(0, indexOfQuestionMark);
         }
 
-        // 查询拥有该路径权限的角色
-        List<Role> roles = roleMapper.selectRolesByUrlAndMethod(requestUrl, method);
+        List<Authority> authorities = authorityMapper.selectWhiteListByMethod(method);
 
+        boolean intercept = true;
+
+        for (Authority authority: authorities)  {
+            Pattern compile = Pattern.compile("^" + authority.getUrl());
+            Matcher matcher = compile.matcher(requestUrl);
+            if (matcher.find()){
+                intercept = false;
+                break;
+            }
+        }
+        if (!intercept){
+            return new ArrayList<>(0);
+        }
+
+        // Authority whiteList = authorityMapper.selectWhiteListByUrlAndMethod(requestUrl, method);
+        // if (whiteList != null) {
+        //     return new ArrayList<>(0);
+        // }
+
+        // 查询拥有该路径权限的角色,
+        List<Role> roles = roleMapper.selectRolesByUrlAndMethod(requestUrl, method);
+        roles.add(superRole);
         // String[] attributes = {"ADMIN"};
         // return SecurityConfig.createList(attributes);
         return roles.stream().map(Role::getName).map(SecurityConfig::new).collect(Collectors.toList());
@@ -60,12 +98,6 @@ public class CustomizeFilterInvocationSecurityMetadataSource implements FilterIn
         return true;
     }
 
-    public static void main(String[] args) {
-        String s = "1234567";
-
-        int index = s.indexOf("9");
-        String s2 = s.substring(0, index);
-    }
 
 }
 

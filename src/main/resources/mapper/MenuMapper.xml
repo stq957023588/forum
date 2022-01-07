@@ -81,11 +81,23 @@
     <select id="selectRoleMenuTreeLeaf" resultType="com.fool.demo.domain.Menu">
         select m.*
         from role_menu_relation rmr
-        join menu m on rmr.MENU_ID = m.ID
-        left join menu p on rmr.MENU_ID =  p.PARENT_MENU_ID
+                 join menu m on rmr.MENU_ID = m.ID
+                 left join menu p on rmr.MENU_ID = p.PARENT_MENU_ID
         where ROLE_ID = #{roleId,jdbcType=BIGINT}
-            and p.id is null
+          and p.id is null
         order by menu_id
+    </select>
+    <select id="selectWhiteList" resultType="com.fool.demo.domain.Menu">
+        select m.*
+        from menu m
+                 join white_list wl on wl.TYPE = 'menu' and wl.WHITE_ID = m.id
+    </select>
+    <select id="selectLimitedMenus" resultType="com.fool.demo.domain.Menu">
+        select m.*
+        from menu m
+                 left join white_list wl on wl.TYPE = 'menu' and wl.WHITE_ID = m.ID
+        where wl.ID is null
+          and m.DELETED = 0
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -94,7 +106,10 @@
         where ID = #{id,jdbcType=INTEGER}
     </delete>
     <delete id="deleteRoleMenu">
-        delete from role_menu_relation where ROLE_ID =#{roleId,jdbcType=BIGINT} and MENU_ID=#{menuId,jdbcType=BIGINT}
+        delete
+        from role_menu_relation
+        where ROLE_ID = #{roleId,jdbcType=BIGINT}
+          and MENU_ID = #{menuId,jdbcType=BIGINT}
     </delete>
     <update id="deleteLogicByIdList" parameterType="java.util.List">
         update menu set DELETED = 1,DELETE_TIME = now() where
@@ -152,7 +167,8 @@
         </trim>
     </insert>
     <insert id="insertRoleMenu">
-        insert into role_menu_relation(menu_id, role_id) values (#{menuId,jdbcType=BIGINT},#{roleId,jdbcType=BIGINT})
+        insert into role_menu_relation(menu_id, role_id)
+        values (#{menuId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.Menu">
         update menu

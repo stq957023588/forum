@@ -211,6 +211,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .withClaim("id", userDetails.getId())
                     .withClaim("name", userDetails.getName())
                     .withClaim("email", userDetails.getUsername())
+                    .withClaim("avatar", userDetails.getAvatar())
                     .withArrayClaim("roles", userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).toArray(new String[]{}))
                     .sign(Algorithm.HMAC256(jwtProperty.getSecret()));
             DefaultResult<Object> result = DefaultResult.success("登陆成功", token);

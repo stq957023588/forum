@@ -62,6 +62,25 @@
                            on a.id = rar.AUTHORITY_ID and rar.ROLE_ID = #{roleId,jdbcType=BIGINT}
         where rar.id is null
     </select>
+    <select id="selectWhiteListByUrlAndMethod" resultType="com.fool.demo.domain.Authority">
+        select a.*
+        from authority a
+                 join white_list wl on wl.TYPE = 'authority' and a.id = wl.WHITE_ID
+        where a.URL = #{url,jdbcType=VARCHAR}
+          and a.method = #{method,jdbcType=BIGINT}
+    </select>
+    <select id="selectLimitedAuthority" resultType="com.fool.demo.domain.Authority">
+        select a.*
+        from authority a
+                 left join white_list wl on wl.TYPE = 'authority' and a.id = wl.WHITE_ID
+        where wl.ID is null
+    </select>
+    <select id="selectWhiteListByMethod" resultType="com.fool.demo.domain.Authority">
+        select a.*
+        from authority a
+                 join white_list wl on wl.TYPE = 'authority' and a.id = wl.WHITE_ID
+        where a.method = #{method,jdbcType=BIGINT}
+    </select>
 
     <insert id="insertRoleAuthority">
         insert into role_authority_relation(role_id, AUTHORITY_ID)

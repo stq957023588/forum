@@ -29,7 +29,7 @@
     <select id="selectByUserId" resultType="com.fool.demo.domain.Role">
         select r.*
         from User_Role_Relation urr
-                 join Role r on r.id = urr.ROLE_ID
+                 join Role r on r.id = urr.ROLE_ID and r.DELETED = 0
         where urr.USER_ID = #{userId,jdbcType=BIGINT}
     </select>
     <select id="selectRolesByUrl" resultType="com.fool.demo.domain.Role">
@@ -43,7 +43,7 @@
         select *
         from role
         where NAME = #{name,jdbcType=VARCHAR}
-        and deleted = 0
+          and deleted = 0
     </select>
     <update id="deleteLogicByIdList" parameterType="java.util.List">
         update role set DELETED = 1,DELETE_TIME = now() where
@@ -72,11 +72,29 @@
         where a.URL = #{url,jdbcType=VARCHAR}
           and a.method = #{method,jdbcType=VARCHAR}
     </select>
+    <select id="selectByIdList" resultType="com.fool.demo.domain.Role">
+        select * from role where
+        <foreach collection="idList" item="id" separator="," open="id in(" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </select>
+    <select id="selectUserDontHaveRoles" resultType="com.fool.demo.domain.Role">
+        select *
+        from role r
+                 left join user_role_relation urr on urr.ROLE_ID = r.ID and urr.USER_ID = #{userId,jdbcType=BIGINT}
+        where urr.id is null and r.deleted = 0
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete
         from role
         where ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteUserRole">
+        delete from user_role_relation where
+        <foreach collection="userRoleIdList" item="userRoleId" separator="," open="id in(" close=")">
+            #{userRoleId,jdbcType=BIGINT}
+        </foreach>
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Role"
             useGeneratedKeys="true">
@@ -109,6 +127,10 @@
             <if test="deleted != null">#{deleted,jdbcType=INTEGER},</if>
             <if test="deleteTime != null">#{deleteTime,jdbcType=TIMESTAMP},</if>
         </trim>
+    </insert>
+    <insert id="insertUserRole">
+        insert into user_role_relation(user_id, ROLE_ID)
+        values (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.Role">
         update role

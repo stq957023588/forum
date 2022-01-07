@@ -1,6 +1,8 @@
 package com.fool.demo.mapstruct;
 
+import com.fool.demo.domain.User;
 import com.fool.demo.entity.CustomizeUser;
+import com.fool.demo.entity.UserAddDTO;
 import com.fool.demo.entity.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -31,4 +33,7 @@ public interface UserConvertor {
     @Mapping(source = "authorities", target = "roles", qualifiedByName = "transferRole")
     UserDTO toDataTransferObject(CustomizeUser user);
 
+    User toDomain(UserAddDTO dto);
+
+    UserDTO toDataTransferObject(User user);
 }

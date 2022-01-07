@@ -2,8 +2,10 @@ package com.fool.demo.service;
 
 import com.fool.demo.domain.Menu;
 import com.fool.demo.domain.MenuExtra;
+import com.fool.demo.domain.Role;
 import com.fool.demo.entity.*;
 import com.fool.demo.mapper.MenuMapper;
+import com.fool.demo.mapper.RoleMapper;
 import com.fool.demo.mapstruct.MenuConvertor;
 import com.fool.demo.utils.PageUtils;
 import com.fool.demo.utils.TreeUtils;
@@ -13,9 +15,12 @@ import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,13 +32,24 @@ import java.util.stream.Collectors;
 @Service
 public class MenuService {
 
+
     private final MenuMapper menuMapper;
+
+    private final RoleMapper roleMapper;
 
     private final SqlSessionFactory sqlSessionFactory;
 
-    public MenuService(MenuMapper menuMapper, SqlSessionFactory sqlSessionFactory) {
+    private Role superRole;
+
+    public MenuService(MenuMapper menuMapper, RoleMapper roleMapper, SqlSessionFactory sqlSessionFactory) {
         this.menuMapper = menuMapper;
+        this.roleMapper = roleMapper;
         this.sqlSessionFactory = sqlSessionFactory;
+    }
+
+    @Value("${security.super-role}")
+    public void setSuperRole(String superRole) {
+        this.superRole = new Role(superRole);
     }
 
     public void delete(List<Integer> idList) {
@@ -64,6 +80,11 @@ public class MenuService {
         menuMapper.updateByPrimaryKey(m);
     }
 
+    public PageInfo<MenuDTO> getLimitedMenus(CommonQUERY query) {
+        ISelect select = menuMapper::selectLimitedMenus;
+        return PageUtils.doSelect(select, query, MenuConvertor.INSTANCE::toDataTransferObject);
+    }
+
     public PageInfo<MenuDTO> getMenus(MenuQUERY query) {
         ISelect select = menuMapper::selectWithParentMenuName;
         return PageUtils.doSelect(select, query);
@@ -77,11 +98,29 @@ public class MenuService {
     }
 
     public List<MenuDTO> getRoleMenus(RoleMenuQUERY query) {
-        List<Menu> menus = query.isLeafOnly() ? menuMapper.selectRoleMenuTreeLeaf(query.getRoleId()) : menuMapper.selectRoleMenu(query.getRoleId());
+        Role role = roleMapper.selectByPrimaryKey(query.getRoleId().longValue());
+        Assert.notNull(role, "角色不存在");
+        List<Menu> menus;
+        if (role.getName().equals(superRole.getName())) {
+            menus = menuMapper.selectAll();
+        } else if (query.isLeafOnly()) {
+            menus = menuMapper.selectRoleMenuTreeLeaf(query.getRoleId());
+        } else {
+            menus = menuMapper.selectRoleMenu(query.getRoleId());
+        }
         return menus.stream().map(MenuConvertor.INSTANCE::toDataTransferObject).collect(Collectors.toList());
     }
 
     public void saveRoleMenus(RoleMenuSaveDTO dto) {
+        Role role = roleMapper.selectByPrimaryKey(dto.getRoleId().longValue());
+
+        if (role == null) {
+            throw new RuntimeException("角色不存在");
+        }
+        if (role.getName().equals(superRole.getName())) {
+            throw new RuntimeException("无法修改超级管理员菜单");
+        }
+
         List<Integer> existMenuIdList = menuMapper.selectMenuIdByRoleId(dto.getRoleId());
 
         List<Integer> newMenuIdList = dto.getMenus().stream().map(MenuDTO::getId).sorted().collect(Collectors.toList());
@@ -133,6 +172,8 @@ public class MenuService {
 
     public List<MenuRoleDTO> getRoleMenuTree() {
         List<MenuExtra> menuExtras = menuMapper.selectAllWithRole();
+        List<Menu> whiteLists = menuMapper.selectWhiteList();
+        List<String> whiteListPaths = whiteLists.stream().map(Menu::getUrl).sorted().collect(Collectors.toList());
 
         ArrayList<MenuRoleDTO> menus = new ArrayList<>();
 
@@ -143,6 +184,7 @@ public class MenuService {
         for (MenuExtra menuExtra : menuExtras) {
             if (currentMenu == null || menuExtra.getRole() == null || !menuExtra.getName().equals(prev.getName())) {
                 MenuMeta menuMeta = new MenuMeta();
+
                 Optional.ofNullable(menuExtra.getRole()).ifPresent(role -> {
                     ArrayList<String> roles = new ArrayList<>();
                     roles.add(role);
@@ -158,9 +200,44 @@ public class MenuService {
                 prev = menuExtra;
                 continue;
             }
-
             currentMenu.getMeta().getRoles().add(menuExtra.getRole());
         }
+        menus.sort(Comparator.comparing(MenuRoleDTO::getPath));
+
+        int whiteListIndex = 0;
+        int menuIndex = 0;
+
+        while (whiteListIndex < whiteListPaths.size() && menuIndex < menus.size()) {
+            String whiteListPath = whiteListPaths.get(whiteListIndex);
+            MenuRoleDTO menu = menus.get(menuIndex);
+            String menuPath = menu.getPath();
+
+            int compare = menuPath.compareTo(whiteListPath);
+
+            if (compare < 0) {
+                List<String> roles = Optional.ofNullable(menu.getMeta().getRoles()).orElse(new ArrayList<>(1));
+                roles.add(superRole.getName());
+                menu.getMeta().setRoles(roles);
+                menuIndex++;
+                continue;
+            }
+
+            if (compare > 0) {
+                whiteListIndex++;
+                continue;
+            }
+            menu.getMeta().setRoles(null);
+            whiteListIndex++;
+            menuIndex++;
+        }
+
+        for (int i = menuIndex; i < menus.size(); i++) {
+            MenuRoleDTO menu = menus.get(i);
+            List<String> roles = Optional.ofNullable(menu.getMeta().getRoles()).orElse(new ArrayList<>(1));
+            roles.add(superRole.getName());
+            menu.getMeta().setRoles(roles);
+        }
+
 
         return TreeUtils.listToTree(menus);
     }

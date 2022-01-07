@@ -18,7 +18,11 @@ public interface RoleMapper {
 
     int insertSelective(Role record);
 
+    int insertUserRole(@Param("userId") Integer userId, @Param("roleId") Integer roleId);
+
     Role selectByPrimaryKey(Long id);
+
+    List<Role> selectByIdList(@Param("idList") List<Integer> idList);
 
     int updateByPrimaryKeySelective(Role record);
 
@@ -30,6 +34,8 @@ public interface RoleMapper {
 
     List<Role> selectRolesByUrlAndMethod(@Param("url") String url, @Param("method") String method);
 
+    List<Role> selectUserDontHaveRoles(@Param("userId") Integer userId);
+
     Role selectByName(String name);
 
     Role selectByNameAndNotEqualsId(@Param("name") String name, @Param("id") Integer id);
@@ -40,7 +46,9 @@ public interface RoleMapper {
 
     List<Role> selectAll();
 
-    int deleteLogicByIdList(@Param("idList")List<Integer> idList);
+    int deleteLogicByIdList(@Param("idList") List<Integer> idList);
+
+    int deleteUserRole(@Param("userRoleIdList")List<Integer> userRoleIdList);
 }
 
 

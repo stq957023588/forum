@@ -24,10 +24,10 @@ public class FoolController {
     }
 
     @RequestMapping("upper-case-entity")
-    public UpperCaseEntity getUpperCaseEntity() {
-        UpperCaseEntity upperCaseEntity = new UpperCaseEntity();
-        upperCaseEntity.setFOOL("assads");
-        return upperCaseEntity;
+    public UpperCase getUpperCaseEntity() {
+        UpperCase upperCase = new UpperCase();
+        upperCase.setFOOL("assads");
+        return upperCase;
     }
 
 

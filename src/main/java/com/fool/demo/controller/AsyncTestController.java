@@ -1,6 +1,7 @@
 package com.fool.demo.controller;
 
 import com.fool.demo.service.AsyncTestService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ public class AsyncTestController {
         this.asyncTestService = asyncTestService;
     }
 
+    @ApiOperation("异步调用测试")
     @RequestMapping(value = "noneReturnAsync", method = RequestMethod.GET)
     public String noneReturnAsyncTest() {
         asyncTestService.noneReturnAsyncTest5000();

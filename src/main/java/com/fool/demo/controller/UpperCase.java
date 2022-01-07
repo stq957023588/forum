@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2021/12/7 11:24
  */
 @Data
-public class UpperCaseEntity {
+public class UpperCase {
 
     public String FOOL;
 

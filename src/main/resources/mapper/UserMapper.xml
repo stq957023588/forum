@@ -25,12 +25,12 @@
         select
         <include refid="Base_Column_List" />
         from user
-        where  ID = #{id,jdbcType=INTEGER} 
+        where  ID = #{id,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from user
-        where  ID = #{id,jdbcType=INTEGER} 
+        where  ID = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.User" useGeneratedKeys="true">
         insert into user
@@ -54,14 +54,14 @@
                 <if test="deleteTime != null">deleteTime,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="id != null">ID = #{id,jdbcType=INTEGER},</if>
-                <if test="name != null">NAME = #{name,jdbcType=VARCHAR},</if>
-                <if test="email != null">EMAIL = #{email,jdbcType=VARCHAR},</if>
-                <if test="password != null">PASSWORD = #{password,jdbcType=VARCHAR},</if>
-                <if test="headPic != null">HEAD_PIC = #{headPic,jdbcType=VARCHAR},</if>
-                <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},</if>
-                <if test="deleted != null">DELETED = #{deleted,jdbcType=INTEGER},</if>
-                <if test="deleteTime != null">DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},</if>
+                <if test="id != null">#{id,jdbcType=INTEGER},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+                <if test="email != null">#{email,jdbcType=VARCHAR},</if>
+                <if test="password != null">#{password,jdbcType=VARCHAR},</if>
+                <if test="headPic != null">#{headPic,jdbcType=VARCHAR},</if>
+                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="deleted != null">#{deleted,jdbcType=INTEGER},</if>
+                <if test="deleteTime != null">#{deleteTime,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.User">
@@ -89,14 +89,17 @@
                     DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},
                 </if>
         </set>
-        where   ID = #{id,jdbcType=INTEGER} 
+        where   ID = #{id,jdbcType=INTEGER}
     </update>
     <select id="selectByEmail" resultType="com.fool.demo.domain.User">
         select * from user where email = #{email,jdbcType=VARCHAR}
     </select>
+    <select id="selectAll" resultType="com.fool.demo.domain.User">
+        select * from user where DELETED = 0
+    </select>
     <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.User">
         update user
-        set 
+        set
             NAME =  #{name,jdbcType=VARCHAR},
             EMAIL =  #{email,jdbcType=VARCHAR},
             PASSWORD =  #{password,jdbcType=VARCHAR},
@@ -104,6 +107,6 @@
             CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP},
             DELETED =  #{deleted,jdbcType=INTEGER},
             DELETE_TIME =  #{deleteTime,jdbcType=TIMESTAMP}
-        where   ID = #{id,jdbcType=INTEGER} 
+        where   ID = #{id,jdbcType=INTEGER}
     </update>
 </mapper>
