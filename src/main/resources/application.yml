@@ -16,3 +16,7 @@ spring:
   # 404会抛出错误设置,防止找不到路径http返回码还是200
   resources:
     add-mappings: false
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  config-location: classpath:mybatis-config.xml

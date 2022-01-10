@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.DictionaryTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.DictionaryType">
+            <id property="code" column="CODE" jdbcType="INTEGER"/>
+            <result property="label" column="LABEL" jdbcType="VARCHAR"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        CODE,LABEL,CREATE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from dictionary_type
+        where  CODE = #{code,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultType="com.fool.demo.domain.DictionaryType">
+        select *
+        from dictionary_type
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from dictionary_type
+        where  CODE = #{code,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByPrimaryKeys">
+        delete from dictionary_type where
+        <foreach collection="primaryKeys" item="primaryKey" separator="," open="code in (" close=")">
+            #{primaryKey,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.DictionaryType" useGeneratedKeys="true">
+        insert into dictionary_type
+        ( CODE,LABEL,CREATE_TIME
+        )
+        values (#{code,jdbcType=INTEGER},#{label,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}
+        ))
+    </insert>
+    <insert id="insertSelective" keyColumn="code" keyProperty="code" parameterType="com.fool.demo.domain.DictionaryType" useGeneratedKeys="true">
+        insert into dictionary_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="code != null">code,</if>
+                <if test="label != null">label,</if>
+                <if test="createTime != null">createTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="code != null"> #{code,jdbcType=INTEGER},</if>
+                <if test="label != null"> #{label,jdbcType=VARCHAR},</if>
+                <if test="createTime != null"> #{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.DictionaryType">
+        update dictionary_type
+        <set>
+                <if test="label != null">
+                    LABEL = #{label,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   CODE = #{code,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.DictionaryType">
+        update dictionary_type
+        set
+            LABEL =  #{label,jdbcType=VARCHAR},
+            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP}
+        where   CODE = #{code,jdbcType=INTEGER}
+    </update>
+</mapper>
