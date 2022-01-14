@@ -46,16 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private JwtProperty jwtProperty;
 
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-
     private CustomizeAccessDecisionManager accessDecisionManager;
 
     private CustomizeFilterInvocationSecurityMetadataSource securityMetadataSource;
-
-    @Autowired
-    public void setJwtAuthenticationFilter(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
 
     @Autowired
     public void setJwtProperty(JwtProperty jwtProperty) {
@@ -147,7 +140,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 会话失效(账号被挤下线)处理逻辑
         // .expiredSessionStrategy(sessionInformationExpiredStrategy());
         // 将自定义的Token处理过滤器添加到UsernamePasswordAuthenticationFilter之前
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtProperty);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        // 自定义账号密码验证登录处理
         CustomizeUsernamePasswordAuthenticationFilter customizeUsernamePasswordAuthenticationFilter = new CustomizeUsernamePasswordAuthenticationFilter();
         customizeUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
         customizeUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());

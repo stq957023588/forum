@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
     @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
     public DefaultResult<Object> handleException(Exception e, HttpServletRequest request) {
         log.error("Catch exception:{}.Ip:{},Path:{}", e.getMessage(), IpUtils.getIpAddr(request), request.getServletPath(), e);

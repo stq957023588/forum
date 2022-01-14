@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fool.demo.mapper.PostMapper">
+
+    <resultMap id="BaseResultMap" type="com.fool.demo.domain.Post">
+            <id property="id" column="ID" jdbcType="INTEGER"/>
+            <result property="title" column="TITLE" jdbcType="VARCHAR"/>
+            <result property="content" column="CONTENT" jdbcType="VARCHAR"/>
+            <result property="creator" column="CREATOR" jdbcType="INTEGER"/>
+            <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="DELETED" jdbcType="INTEGER"/>
+            <result property="deleteTime" column="DELETE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,TITLE,CONTENT,
+        CREATOR,CREATE_TIME,DELETED,
+        DELETE_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from post
+        where  ID = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultType="com.fool.demo.domain.Post">
+        select * from post where 1=1
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from post
+        where  ID = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Post" useGeneratedKeys="true">
+        insert into post
+        ( ID,TITLE,CONTENT
+        ,CREATOR,CREATE_TIME,DELETED
+        ,DELETE_TIME)
+        values (#{id,jdbcType=INTEGER},#{title,jdbcType=VARCHAR},#{content,jdbcType=VARCHAR}
+        ,#{creator,jdbcType=INTEGER},#{createTime,jdbcType=TIMESTAMP},#{deleted,jdbcType=INTEGER}
+        ,#{deleteTime,jdbcType=TIMESTAMP}))
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.fool.demo.domain.Post" useGeneratedKeys="true">
+        insert into post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="title != null">title,</if>
+                <if test="content != null">content,</if>
+                <if test="creator != null">creator,</if>
+                <if test="createTime != null">createTime,</if>
+                <if test="deleted != null">deleted,</if>
+                <if test="deleteTime != null">deleteTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">ID = #{id,jdbcType=INTEGER},</if>
+                <if test="title != null">TITLE = #{title,jdbcType=VARCHAR},</if>
+                <if test="content != null">CONTENT = #{content,jdbcType=VARCHAR},</if>
+                <if test="creator != null">CREATOR = #{creator,jdbcType=INTEGER},</if>
+                <if test="createTime != null">CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="deleted != null">DELETED = #{deleted,jdbcType=INTEGER},</if>
+                <if test="deleteTime != null">DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fool.demo.domain.Post">
+        update post
+        <set>
+                <if test="title != null">
+                    TITLE = #{title,jdbcType=VARCHAR},
+                </if>
+                <if test="content != null">
+                    CONTENT = #{content,jdbcType=VARCHAR},
+                </if>
+                <if test="creator != null">
+                    CREATOR = #{creator,jdbcType=INTEGER},
+                </if>
+                <if test="createTime != null">
+                    CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="deleted != null">
+                    DELETED = #{deleted,jdbcType=INTEGER},
+                </if>
+                <if test="deleteTime != null">
+                    DELETE_TIME = #{deleteTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   ID = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fool.demo.domain.Post">
+        update post
+        set
+            TITLE =  #{title,jdbcType=VARCHAR},
+            CONTENT =  #{content,jdbcType=VARCHAR},
+            CREATOR =  #{creator,jdbcType=INTEGER},
+            CREATE_TIME =  #{createTime,jdbcType=TIMESTAMP},
+            DELETED =  #{deleted,jdbcType=INTEGER},
+            DELETE_TIME =  #{deleteTime,jdbcType=TIMESTAMP}
+        where   ID = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

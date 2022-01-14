@@ -11,7 +11,7 @@
     <!-- 分页助手 -->
     <plugins>
         <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
-        <plugin interceptor="com.github.pagehelper.QueryInterceptor"/>
+<!--        <plugin interceptor="com.github.pagehelper.QueryInterceptor"/>-->
         <plugin interceptor="com.fool.demo.interceptor.DataRuleMybatisInterceptor"/>
     </plugins>
 </configuration>

@@ -42,6 +42,27 @@
         where drgm.id is null
 
     </select>
+    <select id="selectGroupIdByRolesAndAuthority" resultType="java.lang.Integer">
+        select DATA_RULE_GROUP_ID
+        from role_authority_data_rule_group_relation radrgr
+        join role_authority_relation rar on rar.ID = radrgr.ROLE_AUTHORITY_RELATION_ID
+        join authority a on rar.AUTHORITY_ID = a.id and a.URL= #{path,jdbcType=VARCHAR} and
+        a.METHOD=#{method,jdbcType=VARCHAR}
+        join role r on r.id = rar.ROLE_ID
+        where
+        <foreach collection="roles" item="rName" separator="," open="r.name in (" close=")">
+            #{rName,jdbcType=VARCHAR}
+        </foreach>
+
+    </select>
+    <select id="selectByGroupIdList" resultType="com.fool.demo.domain.DataRule">
+        select dr.* from data_rule dr
+        join data_rule_group_member drgm on dr.ID = drgm.DATA_RULE_ID
+        where
+        <foreach collection="groupIdList" item="groupId" separator="," open="drgm.DATA_RULE_GROUP_ID in (" close=")">
+            #{groupId,jdbcType=BIGINT}
+        </foreach>
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete

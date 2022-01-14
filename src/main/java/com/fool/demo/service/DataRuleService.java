@@ -11,7 +11,9 @@ import com.github.pagehelper.ISelect;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author fool
@@ -27,6 +29,15 @@ public class DataRuleService {
         this.dataRuleMapper = dataRuleMapper;
     }
 
+
+    public List<DataRuleDTO> getDataRuleByRolesAndAuthority(List<String> roles, String path, String method) {
+        List<Integer> groupIdList = dataRuleMapper.selectGroupIdByRolesAndAuthority(roles, path, method);
+        if (groupIdList.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<DataRule> dataRules = dataRuleMapper.selectByGroupIdList(groupIdList);
+        return dataRules.stream().map(DataRuleConvertor.INSTANCE::toDataTransferObject).collect(Collectors.toList());
+    }
 
     public void addDataRule(DataRuleDTO dto) {
         DataRule dataRule = DataRuleConvertor.INSTANCE.toDomain(dto);
@@ -59,9 +70,6 @@ public class DataRuleService {
         ISelect select = () -> dataRuleMapper.selectByGroup(query);
         return PageUtils.doSelect(select, query, DataRuleConvertor.INSTANCE::toDataTransferObject);
     }
-
-
-
 
 
 }

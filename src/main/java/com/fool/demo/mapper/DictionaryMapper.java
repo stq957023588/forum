@@ -1,5 +1,6 @@
 package com.fool.demo.mapper;
 
+import com.fool.demo.annotation.DataAuthority;
 import com.fool.demo.domain.Dictionary;
 import com.fool.demo.entity.DictQUERY;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,16 +14,17 @@ import java.util.List;
 @Mapper
 public interface DictionaryMapper {
 
-    int deleteByPrimaryKey(@Param("type")Integer type, @Param("code")Integer code);
+    int deleteByPrimaryKey(@Param("type") Integer type, @Param("code") Integer code);
 
     int insert(Dictionary record);
 
     int insertSelective(Dictionary record);
 
-    Dictionary selectByPrimaryKey(@Param("type")Integer type, @Param("code")Integer code);
+    Dictionary selectByPrimaryKey(@Param("type") Integer type, @Param("code") Integer code);
 
     List<Dictionary> selectByType(@Param("type") Integer type);
 
+    @DataAuthority
     List<Dictionary> select(DictQUERY query);
 
     int updateByPrimaryKeySelective(Dictionary record);

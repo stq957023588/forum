@@ -9,7 +9,6 @@ import com.fool.demo.entity.CustomizeUser;
 import com.fool.demo.entity.UserDTO;
 import com.fool.demo.mapstruct.UserConvertor;
 import com.fool.demo.property.JwtProperty;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.stream.Collectors;
@@ -22,9 +21,7 @@ import java.util.stream.Stream;
 public class UserUtils {
 
     public static UserDTO getCurrentUser() {
-        UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomizeUser customizeUser = (CustomizeUser) authenticationToken.getPrincipal();
-        return UserConvertor.INSTANCE.toDataTransferObject(customizeUser);
+        return UserConvertor.INSTANCE.toDataTransferObject(getCurrentUserDetails());
     }
 
     public static CustomizeUser getCurrentUserDetails() {

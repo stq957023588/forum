@@ -30,11 +30,13 @@ public interface DataRuleMapper {
 
     List<DataRule> selectByGroup(DataRuleGroupMemberQUERY query);
 
-    List<DataRule> selectDontHaveByGroup(@Param("dataRuleGroupId")Integer dataRuleGroupId);
+    List<DataRule> selectDontHaveByGroup(@Param("dataRuleGroupId") Integer dataRuleGroupId);
 
     List<DataRule> selectAll();
 
+    List<Integer> selectGroupIdByRolesAndAuthority(@Param("roles") List<String> roles, @Param("path") String path, @Param("method") String method);
 
+    List<DataRule> selectByGroupIdList(@Param("groupIdList") List<Integer> groupIdList);
 
 
 }
